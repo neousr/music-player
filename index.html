@@ -64,7 +64,7 @@
         }
 
         .slider::-webkit-slider-runnable-track {
-            height: 4px;
+            height: 3px;
             cursor: pointer;
             background-color: var(--color);
             border-radius: 2px;
@@ -86,13 +86,13 @@
 
         .slider::-moz-range-progress {
             background-color: var(--color);
-            height: 4px;
+            height: 3px;
             border-radius: 2px;
             cursor: pointer;
         }
 
         .slider::-moz-range-track {
-            height: 4px;
+            height: 3px;
             cursor: pointer;
             background-color: #fff;
             border-radius: 2px;
@@ -406,8 +406,8 @@
         ];*/
 
         let audioPlayer = new Audio();
-        // audioPlayer.controls = true;
-        // d.body.appendChild(audioPlayer);
+
+        const audioSourcePath = "https://neobte.github.io/music-player/audio/";
 
         const validOptions = ["my_playlist", "rock", "salsa"];
 
@@ -416,6 +416,7 @@
         let currentVolume = 1; // 1 = 100 %
         let playlistName;
         let previousRowActive = null;
+        let previousSelectedPlaylist = "";
 
         d.addEventListener("DOMContentLoaded", e => {
             init();
@@ -433,7 +434,10 @@
                 if (selectPlaylist.selectedIndex === 0) return;
                 playlistName = selectPlaylist.value;
                 if (!validOptions.includes(playlistName)) return;
-                sendHttpRequest("GET", "https://neobte.github.io/music-player/audio/" + playlistName + "/playlist.json", null, handleResponse);
+                if (previousSelectedPlaylist === playlistName) return;
+
+                previousSelectedPlaylist = playlistName;
+                sendHttpRequest("GET", audioSourcePath + playlistName + "/playlist.json", null, handleResponse);
             });
 
         }
@@ -468,7 +472,7 @@
         };
 
         const loadSong = songIndex => {
-            audioPlayer.src = "https://neobte.github.io/music-player/audio/" + playlistName + "/" + songs[songIndex].name;
+            audioPlayer.src = audioSourcePath + playlistName + "/" + songs[songIndex].name;
             audioPlayer.dataset.songId = songs[songIndex].id;
             artist.textContent = rmExt(songs[songIndex].name);
             // title.textContent = songs[songIndex].title;
@@ -513,7 +517,7 @@
             if (!isShuffle) songIndex = tr.rowIndex;
             const song = getSongById(+tr.dataset.songId);
 
-            audioPlayer.src = "https://neobte.github.io/music-player/audio/" + playlistName + "/" + song.name;
+            audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
             audioPlayer.dataset.songId = song.id;
             artist.textContent = rmExt(song.name);
             setAnimation(artist);
