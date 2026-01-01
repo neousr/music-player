@@ -524,6 +524,8 @@
             artist.textContent = rmExt(song.name);
             setAnimation(artist);
             playAudio();
+
+            d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
         });
 
         const getSongById = id => {
@@ -648,6 +650,9 @@
                 loadSong(songIndex);
             }
             updateRowActive();
+            // background: linear-gradient(to right, #6f0000, #200122);
+            // https://uigradients.com
+            d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
         });
 
         backwardBtn.addEventListener("click", e => {
@@ -798,6 +803,14 @@
 
         const rmExt = name => {
             return name.slice(0, -4);
+        }
+
+        const getRandomHexColor = (max = 256) => {
+            if (0 > max || max > 256) return;
+            return '#' +
+                ((Math.random() * max) | 0).toString(16).padStart(2, '0') +
+                ((Math.random() * max) | 0).toString(16).padStart(2, '0') +
+                ((Math.random() * max) | 0).toString(16).padStart(2, '0');
         }
 
     </script>
