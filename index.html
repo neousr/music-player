@@ -273,7 +273,7 @@
             <!-- Controls -->
             <div class="mb-1 text-center flex space-between">
                 <!-- Shuffle btn -->
-                <button id="shuffle-btn" title="Aleatorio">
+                <button id="shuffle-btn" title="Activar reproducción aleatoria">
                     <!-- Shuffle icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="50 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -311,7 +311,7 @@
                     </svg>
                 </button>
                 <!-- Repeat btn -->
-                <button id="repeat-btn" title="Repetir lista">
+                <button id="repeat-btn" title="Repetir playlist">
                     <!-- Repeat icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -672,7 +672,7 @@
             repeatState = (repeatState + 1) % 3;
             if (repeatState === 0) {
                 audioPlayer.loop = false;
-                repeatBtn.title = "Repetir lista";
+                repeatBtn.title = "Repetir playlist";
 
                 repeatBtn.children[1].style.display = "none";
                 repeatBtn.children[0].style.display = "inline";
@@ -680,7 +680,7 @@
             }
             if (repeatState === 1) {
                 isRepeatAll = true;
-                repeatBtn.title = "En bucle";
+                repeatBtn.title = "Repetir canción indefinidamente";
 
                 repeatBtn.children[0].querySelector("circle").style.display = "inline";
                 return;
@@ -688,7 +688,7 @@
             if (repeatState === 2) {
                 isRepeatAll = false;
                 audioPlayer.loop = true;
-                repeatBtn.title = "Detener bucle";
+                repeatBtn.title = "Desactivar la repetición indefinida";
 
                 repeatBtn.children[0].querySelector("circle").style.display = "none";
                 repeatBtn.children[0].style.display = "none";
@@ -713,14 +713,14 @@
                 // Seteamos songIndex a cero
                 songIndex = 0;
                 // console.table(songs);
-                shuffleBtn.title = "Secuencial";
+                shuffleBtn.title = "Desactivar reproducción aleatoria";
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "inline";
             } else {
                 songIndex = songsCopy.findIndex(song => song.id === +(audioPlayer.dataset.songId));
                 songs = [...songsCopy];
                 // console.table(songs);
-                shuffleBtn.title = "Aleatorio";
+                shuffleBtn.title = "Activar reproducción aleatoria";
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "none";
             }
