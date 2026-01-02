@@ -327,7 +327,7 @@
             </div>
 
             <!-- Volume slider -->
-            <div class="mb-1 text-center flex" style="gap: .5rem;">
+            <div class="mb-1 flex" style="gap: .5rem;">
                 <button id="volume-btn" title="Silenciar" style="font-size: .75rem;width: 8%;">
                     <!-- Volume-high icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
@@ -341,20 +341,22 @@
                     </svg>
                 </button>
                 <input type="range" id="volume-slider" class="slider" min="0" max="100" value="100" step="1"
-                    style="width: 85%;">
-                <span id="volume-display" class="text-right fs-12" style="width: 7%;">100</span>
+                    style="width: 84%;">
+                <span id="volume-display" class="text-right fs-12" style="width: 8%;">100</span>
             </div>
 
         </div>
 
         <!-- Select Playlist -->
         <div class="text-center" style="margin-bottom: .5rem;">
-            <select id="playlist">
+            <select id="playlist" style="margin-bottom: .5rem;">
                 <option value="">🎧 Playlists</option>
                 <option value="my_playlist">🤷‍♂️ My Playlist</option>
                 <option value="rock">🎸 Rock</option>
                 <option value="salsa">🕺 Salsa</option>
             </select>
+
+            <span id="display-playlist-duration" class="hidde"></span>
         </div>
 
         <!-- Table Playlist -->
@@ -460,6 +462,8 @@
                 loadSong(songIndex);
                 // 3. Reproducimos
                 playAudio();
+
+                d.getElementById("display-playlist-duration").textContent = getPlaylistDuration(songs);
 
                 if (currentTimeSlider.disabled) {
                     currentTimeSlider.disabled = false;
@@ -811,6 +815,14 @@
                 ((Math.random() * max) | 0).toString(16).padStart(2, '0') +
                 ((Math.random() * max) | 0).toString(16).padStart(2, '0') +
                 ((Math.random() * max) | 0).toString(16).padStart(2, '0');
+        }
+
+        const getPlaylistDuration = songs => {
+            let totalSeconds = 0, len = songs.length;
+            for (let i = 0; i < len; i++) {
+                totalSeconds += songs[i].duration;
+            }
+            return formatTime(totalSeconds, 1);
         }
 
     </script>
