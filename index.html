@@ -348,7 +348,7 @@
             <!-- Volume slider -->
             <div class="mb-1 flex">
                 <div style="width: 10%;">
-                    <button id="volume-btn" title="Silenciar" style="font-size: .75rem;">
+                    <button class="flex" id="volume-btn" title="Silenciar" style="font-size: .75rem;">
                         <!-- Volume-high icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                             <path fill="currentColor"
@@ -542,6 +542,7 @@
 
         tbody.addEventListener("click", e => {
             const tr = e.target.parentNode;
+            console.log(tr);
             if (tr.tagName !== "TR" || tr.classList.contains("playing")) return;
 
             if (previousRowActive) previousRowActive.classList.remove("playing");
