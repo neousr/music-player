@@ -173,7 +173,7 @@
         }
 
         .table tr td:nth-child(2) {
-            width: 60%;
+            width: 63%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -185,8 +185,9 @@
         }
 
         .table tr td:nth-child(4) {
-            width: 8%;
+            width: 5%;
             text-align: right;
+            /* border: 1px solid crimson; */
         }
 
         button {
@@ -526,7 +527,7 @@
                 tr.innerHTML = `<td>${idx + 1}</td>
                 <td>${parseName(songs[idx].name)}</td>
                 <td>${formatTime(songs[idx].duration)}</td>
-                <td><button class="download-btn" title="Download">
+                <td data-action="download"><button class="download-btn" title="Download">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                             <path fill="currentColor"
                                         d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z" />
@@ -538,13 +539,19 @@
             tbody.children[songIndex].classList.add("playing");
             previousRowActive = tbody.children[songIndex];
             scrollRowIntoView(previousRowActive);
+
+            const buttons = d.getElementsByClassName("download-btn");
+
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener("click", e => {
+                    downloadSong(getSongById(+buttons[i].closest("tr").dataset.songId));
+                });
+            }
         }
 
         tbody.addEventListener("click", e => {
             const tr = e.target.parentNode;
-            console.log(tr);
             if (tr.tagName !== "TR" || tr.classList.contains("playing")) return;
-
             if (previousRowActive) previousRowActive.classList.remove("playing");
             tr.classList.add("playing");
             previousRowActive = tr;
@@ -557,9 +564,32 @@
             artist.textContent = rmExt(song.name);
             setAnimation(artist);
             playAudio();
+            // const actionCell = e.target.closest("[data-action]");
+            // console.log(actionCell);
+            // if (actionCell) {
+            //     const action = actionCell.dataset.action;
+            //     if (action === "download") {
+            //         downloadSong(song);
+            //     }
+            // }
 
             d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
         });
+
+
+        const downloadSong = song => {
+            const url = audioSourcePath + playlistName + "/" + song.name;
+            fetch(url)
+                .then(response => response.blob()) // convertimos a blob
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                    downloadLink.download = song.name;
+                    downloadLink.click();
+                    URL.revokeObjectURL(url); // liberamos memoria
+                })
+                .catch(err => console.error('Error al descargar:', err));
+        }
 
         const getSongById = id => {
             return songs.find(song => song.id === id);
