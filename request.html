@@ -59,34 +59,37 @@
 
         const filename = REQUEST_URL.slice(REQUEST_URL.lastIndexOf("/") + 1);
 
-        // let mimeType = "audio/mp4";
+        let mimeType = "audio/mp4";
 
         downloadBtn.addEventListener("click", e => {
 
-            downloadSong(REQUEST_URL);
+            // downloadSong(REQUEST_URL);
 
-            // fetch(REQUEST_URL)
-            //     .then(response => {
-            //         mimeType = response.headers.get("content-type");
-            //         return response.blob();
-            //     }).then(blob => {
-            //         downloadLink.href = URL.createObjectURL(new Blob([blob], { type: mimeType }));
-            //         downloadLink.download = filename;
-            //         downloadLink.click();
-            //     }).catch(error => console.error("Download error: " + error));
+            fetch(REQUEST_URL)
+                .then(response => {
+                    mimeType = response.headers.get("content-type");
+                    return response.blob();
+                }).then(blob => {
+                    downloadLink.href = URL.createObjectURL(new Blob([blob], { type: mimeType }));
+                    downloadLink.download = filename;
+                    downloadLink.click();
+                }).catch(error => console.error("Download error: " + error));
 
         });
 
         const downloadSong = async request_url => {
 
-            const response = await fetch(request_url);
-            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-            downloadLink.href = URL.createObjectURL(
-                new Blob([await response.blob()], { type: response.headers.get("content-type") })
-            );
-            downloadLink.download = filename;
-            downloadLink.click();
-
+            try {
+                const response = await fetch(request_url);
+                // if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                downloadLink.href = URL.createObjectURL(
+                    new Blob([await response.blob()], { type: response.headers.get("content-type") })
+                );
+                downloadLink.download = filename;
+                downloadLink.click();
+            } catch (error) {
+                console.log(`Error: ${error.message}`);
+            }
         }
 
     </script>
