@@ -63,17 +63,17 @@
 
         downloadBtn.addEventListener("click", e => {
 
-            downloadSong(REQUEST_URL);
+            // downloadSong(REQUEST_URL);
 
-            // fetch(REQUEST_URL)
-            //     .then(response => {
-            //         mimeType = response.headers.get("content-type");
-            //         return response.blob();
-            //     }).then(blob => {
-            //         downloadLink.href = URL.createObjectURL(new Blob([blob], { type: mimeType }));
-            //         downloadLink.download = filename;
-            //         downloadLink.click();
-            //     }).catch(error => console.error("Download error: " + error));
+            fetch(REQUEST_URL)
+                .then(response => {
+                    mimeType = response.headers.get("content-type");
+                    return response.arrayBuffer();
+                }).then(buffer => {
+                    downloadLink.href = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+                    downloadLink.download = filename;
+                    downloadLink.click();
+                }).catch(error => console.error("Download error: " + error));
 
         });
 
