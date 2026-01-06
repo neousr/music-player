@@ -63,17 +63,23 @@
 
         downloadBtn.addEventListener("click", e => {
 
-            // downloadSong(REQUEST_URL);
+            downloadSong(REQUEST_URL);
 
-            fetch(REQUEST_URL)
-                .then(response => {
-                    mimeType = response.headers.get("content-type");
-                    return response.arrayBuffer();
-                }).then(buffer => {
-                    downloadLink.href = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
-                    downloadLink.download = filename;
-                    downloadLink.click();
-                }).catch(error => console.error("Download error: " + error));
+            // fetch(REQUEST_URL)
+            //     .then(response => {
+            //         if (!response.ok) {
+            //             throw new Error(`HTTP error, status = ${response.status}`);
+            //         }
+            //         mimeType = response.headers.get("content-type");
+            //         return response.arrayBuffer();
+            //         // https://developer.mozilla.org/en-US/docs/Web/API/Response/arrayBuffer
+            //     })
+            //     .then(buffer => {
+            //         downloadLink.href = URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+            //         downloadLink.download = filename;
+            //         downloadLink.click();
+            //     })
+            //     .catch(error => console.error("Download error: " + error));
 
         });
 
@@ -81,15 +87,17 @@
 
             try {
                 const response = await fetch(request_url);
-                // if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                mimeType = response.headers.get("content-type");
                 downloadLink.href = URL.createObjectURL(
-                    new Blob([await response.arrayBuffer()], { type: response.headers.get("content-type") })
+                    new Blob([await response.arrayBuffer()], { type: mimeType })
                 );
                 downloadLink.download = filename;
                 downloadLink.click();
             } catch (error) {
                 console.log(`Error: ${error.message}`);
             }
+
         }
 
     </script>
