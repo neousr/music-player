@@ -7,7 +7,7 @@
     <meta name="author" content="Julio César">
     <meta name="keywords"
         content="Audio Player, Music Player, Web Player, Music APP, Reproductor de Música, Reproductor de Audio, Reproductor Web">
-    <link rel="shortcut icon" href="img/neobte.png" type="image/png" sizes="16x16 32x32">
+    <link rel="shortcut icon" href="img/neobte_logo.png" type="image/png" sizes="16x16 32x32">
     <title>Neobte - Music Player</title>
 
     <style>
@@ -123,7 +123,7 @@
         }
 
         .playlist-container {
-            height: 288px;
+            height: 252px;
             overflow-y: auto;
             overflow-x: hidden;
         }
@@ -203,6 +203,19 @@
             cursor: pointer;
             transition-duration: 0.4s;
             color: #dee2e6;
+        }
+
+        #play-btn {
+            font-size: 1rem;
+            width: 38px;
+            height: 38px;
+            background-color: #dee2e6;
+            color: #0d1117;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         select {
@@ -310,7 +323,7 @@
                     </svg>
                 </button>
                 <!-- Play/pause btn -->
-                <button id="play-btn" title="Reproducir" style="font-size: 1rem;">
+                <button id="play-btn" title="Reproducir">
                     <!-- Play icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                         <path fill="currentColor"
