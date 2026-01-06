@@ -81,9 +81,10 @@
 
             const response = await fetch(request_url);
             if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-            downloadLink.href = URL.createObjectURL(await response.blob());
+            downloadLink.href = URL.createObjectURL(
+                new Blob([await response.blob()], { type: response.headers.get("content-type") })
+            );
             downloadLink.download = filename;
-            downloadLink.type = response.headers.get("content-type");
             downloadLink.click();
 
         }
