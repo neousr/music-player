@@ -391,7 +391,7 @@
                 <option value="rock">🎸 Rock</option>
                 <option value="salsa">🕺 Salsa</option>
             </select>
-            <span id="display-playlist-duration" class="fs-12 hidden"></span>
+            <span id="playlist-duration-display" class="fs-12 hidden"></span>
         </div>
 
         <!-- Table Playlist -->
@@ -500,7 +500,7 @@
                 // 3. Reproducimos
                 playAudio();
 
-                d.getElementById("display-playlist-duration").textContent = getPlaylistDuration(songs);
+                d.getElementById("playlist-duration-display").textContent = getPlaylistDuration(songs);
 
                 if (currentTimeSlider.disabled) {
                     currentTimeSlider.disabled = false;
