@@ -220,7 +220,7 @@
 
         select {
             width: 100%;
-            padding: .25rem 0;
+            padding: .25rem;
             text-align: center;
             display: inline-block;
             border: none;
@@ -301,7 +301,9 @@
                     <span id="countdown">-0:00</span>
                     <span id="duration">0:00</span>
                 </div>
-                <input type="range" id="current-time-slider" class="slider" min="0" value="0" step=".01" disabled>
+                <input type="range" id="current-time-slider" class="slider" min="0" max="100" value="0" step=".01"
+                    disabled>
+
             </div>
 
             <!-- Controls -->
@@ -801,9 +803,12 @@
         // Format time in hh:mm:ss or mm:ss
         const formatTime = (seconds, format = 0) => {
             seconds = Math.round(seconds); // 287.370158
-            const hours = (seconds / 3600) | 0; // Hours calculation
-            const minutes = ((seconds % 3600) / 60) | 0; // Minutes calculation
-            const remainingSeconds = (seconds % 60) | 0; // Whole seconds
+            const hours = Math.floor(seconds / 3600);
+            // const hours = (seconds / 3600) | 0; // Hours calculation
+            const minutes = Math.floor((seconds % 3600) / 60);
+            // const minutes = ((seconds % 3600) / 60) | 0; // Minutes calculation
+            const remainingSeconds = seconds % 60;
+            // const remainingSeconds = (seconds % 60) | 0; // Whole seconds
 
             if (format === 0) {
                 return hours > 0
