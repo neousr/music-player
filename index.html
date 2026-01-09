@@ -518,6 +518,7 @@
 
         const loadSong = songIndex => {
             audioPlayer.src = audioSourcePath + playlistName + "/" + songs[songIndex].name;
+            audioPlayer.preload = "metadata";
             audioPlayer.dataset.songId = songs[songIndex].id;
             artist.textContent = rmExt(songs[songIndex].name);
             // title.textContent = songs[songIndex].title;
@@ -619,15 +620,17 @@
             row.scrollIntoView({ behavior: "auto", block: "center" });
         }
 
+        // let totalDuration = null;
+
         const updateDuration = () => {
-            if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
-                // console.log(audioPlayer.duration);
-                currentTime.textContent = formatTime(audioPlayer.currentTime);
+            if (/*totalDuration === null && */isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                // totalDuration = audioPlayer.duration;
+                currentTime.textContent = "00:00";
                 duration.textContent = formatTime(audioPlayer.duration);
-                countdown.textContent = `-${formatTime(audioPlayer.duration - audioPlayer.currentTime)}`;
+                countdown.textContent = `-${formatTime(audioPlayer.duration - 0)}`;
 
                 currentTimeSlider.max = audioPlayer.duration; // El maximo de la barra de progreso
-                currentTimeSlider.value = audioPlayer.currentTime; // Inicia en 0
+                currentTimeSlider.value = 0; // Inicia en 0
             }
         }
 
@@ -635,9 +638,11 @@
         audioPlayer.addEventListener("durationchange", updateDuration);
 
         audioPlayer.addEventListener("timeupdate", e => {
-            currentTime.textContent = formatTime(audioPlayer.currentTime);
-            currentTimeSlider.value = audioPlayer.currentTime;
-            countdown.textContent = `-${formatTime(audioPlayer.duration - audioPlayer.currentTime)}`;
+            if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                currentTime.textContent = formatTime(audioPlayer.currentTime);
+                currentTimeSlider.value = audioPlayer.currentTime;
+                countdown.textContent = `-${formatTime(audioPlayer.duration - audioPlayer.currentTime)}`;
+            }
         });
 
         currentTimeSlider.addEventListener("input", e => {
