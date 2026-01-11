@@ -297,9 +297,9 @@
             <!-- Current time slider -->
             <div class="mb-1">
                 <div class="flex space-between fs-12" style="line-height: 8px;">
-                    <span id="current-time">00:00</span>
-                    <span id="countdown">-00:00</span>
-                    <span id="duration">00:00</span>
+                    <span id="current-time">0:00</span>
+                    <span id="countdown">-0:00</span>
+                    <span id="duration">0:00</span>
                 </div>
                 <input type="range" id="current-time-slider" class="slider" min="0" max="100" value="0" step=".01"
                     disabled>
@@ -625,7 +625,7 @@
         const updateDuration = () => {
             if (/*totalDuration === null && */isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
                 // totalDuration = audioPlayer.duration;
-                currentTime.textContent = "00:00";
+                currentTime.textContent = "0:00";
                 duration.textContent = formatTime(audioPlayer.duration);
                 countdown.textContent = `-${formatTime(audioPlayer.duration - 0)}`;
 
@@ -638,6 +638,7 @@
         audioPlayer.addEventListener("durationchange", updateDuration);
 
         audioPlayer.addEventListener("timeupdate", e => {
+            // Esta condición evita el formato por ejemplo: -5:NaN
             if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
                 currentTime.textContent = formatTime(audioPlayer.currentTime);
                 currentTimeSlider.value = audioPlayer.currentTime;
@@ -813,21 +814,21 @@
 
         // Format time in hh:mm:ss or mm:ss
         const formatTime = (seconds, format = 0) => {
-            if (!isFinite(seconds) || seconds <= 0) return "00:00";
+            // if (!isFinite(seconds) || seconds <= 0) return "0:00";
 
-            seconds = Math.round(seconds); // 287.370158 => 287
-            const hours = Math.floor(seconds / 3600);
-            // const hours = (seconds / 3600) | 0; // Hours calculation
-            const minutes = Math.floor(seconds / 60) % 60; // forma 1
+            // seconds = Math.round(seconds); // 59.6 seconds = 60, No usar
+            seconds = seconds | 0; // or Math.floor(seconds);
+            // const hours = Math.floor(seconds / 3600);
+            const hours = (seconds / 3600) | 0; // Hours calculation
+            // const minutes = Math.floor(seconds / 60) % 60; // forma 1
             // const minutes = Math.floor((seconds % 3600) / 60); // forma 2
-            // const minutes = ((seconds % 3600) / 60) | 0; // Minutes calculation
-            const remainingSeconds = seconds % 60;
-            // const remainingSeconds = (seconds % 60) | 0; // Whole seconds
+            const minutes = ((seconds / 60) | 0) % 60; // Minutes calculation
+            const remainingSeconds = seconds % 60; // Whole seconds
 
             if (format === 0) {
                 return hours > 0
-                    ? `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`
-                    : `${minutes < 10 ? "0" + minutes : minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`;
+                    ? `${/*hours < 10 ? "0" + hours : */hours}:${minutes < 10 ? "0" + minutes : minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`
+                    : `${/*minutes < 10 ? "0" + minutes : */minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`;
             }
 
             return hours > 0
