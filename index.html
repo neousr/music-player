@@ -578,8 +578,11 @@
             const song = getSongById(+tr.dataset.songId);
 
             audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
+            audioPlayer.load();
+            audioPlayer.preload = "metadata";
             audioPlayer.dataset.songId = song.id;
             artist.textContent = rmExt(song.name);
+            
             setAnimation(artist);
             playAudio();
 
