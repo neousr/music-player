@@ -518,6 +518,7 @@
 
         const loadSong = songIndex => {
             audioPlayer.src = audioSourcePath + playlistName + "/" + songs[songIndex].name;
+            audioPlayer.load();
             audioPlayer.preload = "metadata";
             audioPlayer.dataset.songId = songs[songIndex].id;
             artist.textContent = rmExt(songs[songIndex].name);
