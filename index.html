@@ -488,7 +488,9 @@
 
         const downloadLink = d.createElement('a');
 
-        let songs, songsCopy, numberOfSongs, songIndex;/*= [
+        let songs, songsCopy, numberOfSongs, songIndex;
+
+        /*[
             { id: 1, artist: "Pedro Suárez Vértiz", title: "Te siento de sólo pensar", url: "https://neobte.github.io/music-player/audio/rock/Pedro%20Su%C3%A1rez%20V%C3%A9rtiz%20-%20Te%20siento%20de%20s%C3%B3lo%20pensar.m4a" },
             { id: 2, artist: "Bob Marley", title: "Jamming", url: "audio/Bob%20Marley%20-%20Jamming.m4a" },
             { id: 3, artist: "Michael Sembello", title: "Maniac", url: "audio/Michael%20Sembello%20-%20Maniac.m4a" },
@@ -559,7 +561,6 @@
                 }
 
                 if (isShuffle) {
-                    // console.log("entramos");
                     isShuffle = false;
                     shuffleBtn.click();
                 }
@@ -572,8 +573,6 @@
             audioPlayer.preload = "metadata";
             audioPlayer.dataset.songId = songs[songIndex].id;
             artist.textContent = rmExt(songs[songIndex].name);
-            // title.textContent = songs[songIndex].title;
-
             setAnimation(artist);
         }
 
@@ -592,77 +591,13 @@
             for (let idx = 0; idx < numberOfSongs; idx++) {
                 const tr = d.createElement("tr");
                 tr.dataset.songId = songs[idx].id;
-                tr.innerHTML = `<td>${idx + 1}</td>
-                <td>${parseName(songs[idx].name)}</td>
-                <td>${formatTime(songs[idx].duration)}</td>
-                <td>
-            <div class="dropdown">
-                <button class="dropdown-btn">
-                    <!-- Ellipsis vertical icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
-                        <path fill="currentColor"
-                            d="M320 208C289.1 208 264 182.9 264 152C264 121.1 289.1 96 320 96C350.9 96 376 121.1 376 152C376 182.9 350.9 208 320 208zM320 432C350.9 432 376 457.1 376 488C376 518.9 350.9 544 320 544C289.1 544 264 518.9 264 488C264 457.1 289.1 432 320 432zM376 320C376 350.9 350.9 376 320 376C289.1 376 264 350.9 264 320C264 289.1 289.1 264 320 264C350.9 264 376 289.1 376 320z" />
-                    </svg>
-                </button>
-                <div class="dropdown-content">
-                    <button id="download-btn" data-action="download">
-                        <!-- Download icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon"
-                            style="margin-right: .5rem;">
-                            <path fill="currentColor"
-                                d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z" />
-                        </svg>
-                        <span>Download</span>
-                    </button>
-                </div>
-            </div>
-                    </td>`;
+                tr.innerHTML = `<td>${idx + 1}</td><td>${parseName(songs[idx].name)}</td><td>${formatTime(songs[idx].duration)}</td>`;
                 fragment.appendChild(tr);
             }
             tbody.appendChild(fragment);
             tbody.children[songIndex].classList.add("playing");
             previousRowActive = tbody.children[songIndex];
             scrollRowIntoView(previousRowActive);
-
-            const dropdownBtn = d.querySelectorAll(".dropdown-btn");
-
-            if (dropdownBtn) {
-                for (let i = 0; i < dropdownBtn.length; i++) {
-                    dropdownBtn[i].addEventListener("click", e => {
-                        e.stopPropagation();
-                        dropdownBtn[i].nextElementSibling.classList.toggle("show");
-                    });
-                }
-            }
-
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function (e) {
-                if (e.target.closest('.dropdown-btn')) return;
-                const dropdowns = d.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-
-            // Dropdown download
-            const dropdownContent = d.querySelectorAll(".dropdown-content");
-            if (dropdownContent) {
-                for (let i = 0; i < dropdownContent.length; i++) {
-                    dropdownContent[i].addEventListener("click", e => {
-                        const actionBtn = e.target.closest("[data-action]");
-                        if (!actionBtn) return;
-                        const action = actionBtn.dataset.action;
-                        if (action === "download") {
-                            // downloadSong(audioPlayer.src);
-                            const songId = +actionBtn.closest("tr").dataset.songId;
-                            downloadSong(audioSourcePath + playlistName + "/" + getSongById(songId).name);
-                        }
-                    });
-                }
-            }
         }
 
         tbody.addEventListener("click", e => {
@@ -694,9 +629,7 @@
 
         const updateRowActive = () => {
             if (previousRowActive) previousRowActive.classList.remove("playing");
-            previousRowActive = tbody.querySelector(
-                `tr[data-song-id="${songs[songIndex].id}"]`
-            );
+            previousRowActive = tbody.querySelector(`tr[data-song-id="${songs[songIndex].id}"]`);
             previousRowActive.classList.add("playing");
             scrollRowIntoView(previousRowActive);
         }
@@ -705,11 +638,8 @@
             row.scrollIntoView({ behavior: "auto", block: "center" });
         }
 
-        // let totalDuration = null;
-
         const updateDuration = () => {
-            if (/*totalDuration === null && */isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
-                // totalDuration = audioPlayer.duration;
+            if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
                 currentTime.textContent = "0:00";
                 duration.textContent = formatTime(audioPlayer.duration);
                 countdown.textContent = `-${formatTime(audioPlayer.duration - 0)}`;
@@ -723,7 +653,7 @@
         audioPlayer.addEventListener("durationchange", updateDuration);
 
         audioPlayer.addEventListener("timeupdate", e => {
-            // Esta condición evita el formato por ejemplo: -5:NaN
+            // Esta condición evita el error en el formateo de tiempo, por ejemplo: -5:NaN
             if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
                 currentTime.textContent = formatTime(audioPlayer.currentTime);
                 currentTimeSlider.value = audioPlayer.currentTime;
@@ -733,7 +663,7 @@
 
         currentTimeSlider.addEventListener("input", e => {
             if (currentTimeSlider.disabled) return;
-            audioPlayer.currentTime = currentTimeSlider.value;
+            audioPlayer.currentTime = +currentTimeSlider.value;
         });
 
         audioPlayer.addEventListener("ended", e => {
@@ -751,7 +681,7 @@
         // Volume slider
         volumeSlider.addEventListener("input", () => {
             volumeDisplay.textContent = volumeSlider.value;
-            audioPlayer.volume = volumeSlider.value / 100;
+            audioPlayer.volume = volumeSlider.value / 100; // number
             if (volumeSlider.value === "0") {
                 audioPlayer.muted = true;
                 currentVolume = 0.5; // 50 %
@@ -761,7 +691,7 @@
                 volumeBtn.children[1].style.display = "inline";
             } else {
                 audioPlayer.muted = false;
-                currentVolume = volumeSlider.value / 100; //  Values are between 0 y 100
+                currentVolume = volumeSlider.value / 100; //  Values are between 0 y 100, "33" / 100 = 0.33 number
                 volumeBtn.title = "Silenciar";
 
                 volumeBtn.children[0].style.display = "inline";
@@ -900,15 +830,10 @@
         // Format time in hh:mm:ss or mm:ss
         const formatTime = (seconds, format = 0) => {
             if (!isFinite(seconds) || seconds <= 0) return "0:00";
-
-            // seconds = Math.round(seconds); // 59.6 seconds = 60, No usar
-            seconds = seconds | 0; // or Math.floor(seconds);
-            // const hours = Math.floor(seconds / 3600);
+            // entero mod entero = entero
             const hours = (seconds / 3600) | 0; // Hours calculation
-            // const minutes = Math.floor(seconds / 60) % 60; // forma 1
-            // const minutes = Math.floor((seconds % 3600) / 60); // forma 2
             const minutes = ((seconds / 60) | 0) % 60; // Minutes calculation
-            const remainingSeconds = seconds % 60; // Whole seconds
+            const remainingSeconds = (seconds | 0) % 60; // Whole seconds
 
             if (format === 0) {
                 return hours > 0
@@ -995,7 +920,6 @@
         }
 
         const downloadSong = async url => {
-
             const decodeURI = decodeURIComponent(url);
             const name = decodeURI.slice(decodeURI.lastIndexOf("/") + 1, -4);
 
@@ -1016,15 +940,11 @@
             } catch (error) {
                 console.error('Error al descargar el archivo:', error);
             }
-
         }
-
-        // End dropdown download
 
     </script>
 
-    <!-- https://www.youtube.com/watch?v=PDsLvd3lnK0 -->
-    <!--  -->
+    <!-- https://www.youtube.com/watch?v=PDsLvd3lnK0 Carrión (Luisito Carrion Oficial) -->
 </body>
 
 </html>
