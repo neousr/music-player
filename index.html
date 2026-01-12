@@ -174,7 +174,7 @@
         }
 
         .table tr td:nth-child(2) {
-            width: 68%;
+            width: 60%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -186,9 +186,8 @@
         }
 
         .table tr td:nth-child(4) {
-            /* width: 8%; */
-            /* text-align: right; */
-            /* border: 1px solid crimson; */
+            width: 8%;
+            text-align: right;
         }
 
         button {
@@ -199,8 +198,6 @@
             /* Firefox => 1px 4px; chrome => 1px 6px */
             padding: 0;
             display: inline-flex;
-            border: none;
-            outline: none;
             cursor: pointer;
             transition-duration: 0.4s;
             color: #dee2e6;
@@ -269,6 +266,56 @@
                 /* Se mueve hacia fuera de la pantalla por la izquierda */
             }
         }
+
+        /* Dropdown styles */
+        .dropdown-btn {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #f1f1f1;
+            min-width: 152px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            min-width: 152px;
+            transition-duration: 0.4s;
+            color: #0d1117;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #ddd;
+        }
+
+        /* End dropdown styles */
     </style>
 </head>
 
@@ -450,6 +497,8 @@
         ];*/
 
         let audioPlayer = new Audio();
+        // audioPlayer.controls = true;
+        // d.body.appendChild(audioPlayer);
 
         const audioSourcePath = "https://neobte.github.io/music-player/audio/";
 
@@ -545,13 +594,29 @@
                 tr.dataset.songId = songs[idx].id;
                 tr.innerHTML = `<td>${idx + 1}</td>
                 <td>${parseName(songs[idx].name)}</td>
-                <td>${formatTime(songs[idx].duration)}</td>`
-                // <td data-action="download"><button class="download-btn" title="Download">
-                //         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
-                //             <path fill="currentColor"
-                //                         d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z" />
-                //         </svg>
-                //     </button></td>`;
+                <td>${formatTime(songs[idx].duration)}</td>
+                <td>
+            <div class="dropdown">
+                <button class="dropdown-btn">
+                    <!-- Ellipsis vertical icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
+                        <path fill="currentColor"
+                            d="M320 208C289.1 208 264 182.9 264 152C264 121.1 289.1 96 320 96C350.9 96 376 121.1 376 152C376 182.9 350.9 208 320 208zM320 432C350.9 432 376 457.1 376 488C376 518.9 350.9 544 320 544C289.1 544 264 518.9 264 488C264 457.1 289.1 432 320 432zM376 320C376 350.9 350.9 376 320 376C289.1 376 264 350.9 264 320C264 289.1 289.1 264 320 264C350.9 264 376 289.1 376 320z" />
+                    </svg>
+                </button>
+                <div class="dropdown-content">
+                    <button id="download-btn" data-action="download">
+                        <!-- Download icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon"
+                            style="margin-right: .5rem;">
+                            <path fill="currentColor"
+                                d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z" />
+                        </svg>
+                        <span>Download</span>
+                    </button>
+                </div>
+            </div>
+                    </td>`;
                 fragment.appendChild(tr);
             }
             tbody.appendChild(fragment);
@@ -559,12 +624,44 @@
             previousRowActive = tbody.children[songIndex];
             scrollRowIntoView(previousRowActive);
 
-            const buttons = d.getElementsByClassName("download-btn");
+            const dropdownBtn = d.querySelectorAll(".dropdown-btn");
 
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener("click", e => {
-                    downloadSong(getSongById(+buttons[i].closest("tr").dataset.songId));
-                });
+            if (dropdownBtn) {
+                for (let i = 0; i < dropdownBtn.length; i++) {
+                    dropdownBtn[i].addEventListener("click", e => {
+                        e.stopPropagation();
+                        dropdownBtn[i].nextElementSibling.classList.toggle("show");
+                    });
+                }
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (e) {
+                if (e.target.closest('.dropdown-btn')) return;
+                const dropdowns = d.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+
+            // Dropdown download
+            const dropdownContent = d.querySelectorAll(".dropdown-content");
+            if (dropdownContent) {
+                for (let i = 0; i < dropdownContent.length; i++) {
+                    dropdownContent[i].addEventListener("click", e => {
+                        const actionBtn = e.target.closest("[data-action]");
+                        if (!actionBtn) return;
+                        const action = actionBtn.dataset.action;
+                        if (action === "download") {
+                            // downloadSong(audioPlayer.src);
+                            const songId = +actionBtn.closest("tr").dataset.songId;
+                            downloadSong(audioSourcePath + playlistName + "/" + getSongById(songId).name);
+                        }
+                    });
+                }
             }
         }
 
@@ -581,6 +678,7 @@
             audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
             audioPlayer.load();
             audioPlayer.preload = "metadata";
+
             audioPlayer.dataset.songId = song.id;
             artist.textContent = rmExt(song.name);
 
@@ -589,24 +687,6 @@
 
             d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
         });
-
-
-        const downloadSong = song => {
-            const url = audioSourcePath + playlistName + "/" + encodeURIComponent(song.name);
-            fetch(url)
-                .then(response => response.arrayBuffer()) // convertimos a blob
-                .then(buffer => {
-                    const blob = new Blob([buffer], {
-                        type: "audio/mp4"
-                    });
-                    const url = URL.createObjectURL(blob);
-                    downloadLink.href = url;
-                    downloadLink.download = song.name;
-                    downloadLink.click();
-                    URL.revokeObjectURL(url); // liberamos memoria
-                })
-                .catch(err => console.error('Error al descargar:', err));
-        }
 
         const getSongById = id => {
             return songs.find(song => song.id === id);
@@ -913,6 +993,33 @@
             }
             return formatTime(totalSeconds, 1);
         }
+
+        const downloadSong = async url => {
+
+            const decodeURI = decodeURIComponent(url);
+            const name = decodeURI.slice(decodeURI.lastIndexOf("/") + 1, -4);
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                const contentType = response.headers.get('Content-Type');
+
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const a = d.createElement('a');
+                a.href = blobUrl;
+                a.download = name;
+                a.click();
+
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error('Error al descargar el archivo:', error);
+            }
+
+        }
+
+        // End dropdown download
 
     </script>
 
