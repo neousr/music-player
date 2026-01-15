@@ -193,6 +193,7 @@
 
         button {
             background: none;
+            color: #dee2e6;
             border: none;
             outline: none;
             /* Teniendo la fuente en 1rem o 16px, el tamaño del icono es de 24px 24px */
@@ -201,23 +202,22 @@
             /* Firefox => 1px 4px; chrome => 1px 6px */
             padding: 0;
             display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
             cursor: pointer;
             transition-duration: 0.4s;
-            color: #dee2e6;
         }
 
         #play-btn {
             /* Esto hará que el tamaño del icono play/pause sea de 30px 30px */
             font-size: 1.25rem;
-            width: 40px;
-            height: 40px;
+            min-width: 44px;
+            min-height: 44px;
             background-color: #dee2e6;
             color: #0d1117;
             aspect-ratio: 1/1;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         select {
@@ -342,9 +342,7 @@
 
             <!-- Song Info -->
             <div class="text-center" style="margin: 1.25rem 0;position: relative;overflow: hidden;">
-                <p id="artist" style="white-space: nowrap;animation: none;">Nada esta
-                    sonando...</p>
-                <!-- <h3 id="title" style="font-weight: 500;"></h3> -->
+                <p id="artist" style="white-space: nowrap;animation: none;">Nada esta sonando...</p>
             </div>
 
             <!-- Current time slider -->
@@ -417,7 +415,7 @@
             <!-- Volume slider -->
             <div class="mb-1 flex">
                 <div style="width: 10%;">
-                    <button class="flex" id="volume-btn" title="Silenciar" style="font-size: .75rem;">
+                    <button class="flex fs-12" id="volume-btn" title="Silenciar">
                         <!-- Volume-high icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                             <path fill="currentColor"
