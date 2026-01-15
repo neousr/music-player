@@ -13,6 +13,7 @@
     <style>
         :root {
             --color: #39FF14;
+            --bg: #0b0e19;
         }
 
         * {
@@ -33,7 +34,7 @@
 
         .container {
             width: 100%;
-            max-width: 640px;
+            max-width: 600px;
             padding-right: calc(1.5rem * .5);
             padding-left: calc(1.5rem * .5);
             margin-right: auto;
@@ -194,7 +195,8 @@
             background: none;
             border: none;
             outline: none;
-            font-size: .875rem;
+            /* Teniendo la fuente en 16px, el tamaño del icono es de 24px 24px */
+            font-size: 1rem;
             /* Firefox => 1px 4px; chrome => 1px 6px */
             padding: 0;
             display: inline-flex;
@@ -204,9 +206,10 @@
         }
 
         #play-btn {
-            font-size: 1rem;
-            width: 38px;
-            height: 38px;
+            /* Esto hará que el tamaño del icono play/pause sea de 30px 30px */
+            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
             background-color: #dee2e6;
             color: #0d1117;
             aspect-ratio: 1/1;
@@ -351,7 +354,6 @@
                 </div>
                 <input type="range" id="current-time-slider" class="slider" min="0" max="100" value="0" step=".01"
                     disabled>
-
             </div>
 
             <!-- Controls -->
