@@ -210,10 +210,10 @@
         }
 
         #play-btn {
+            min-block-size: 44px;
+            min-inline-size: 44px;
             /* Esto hará que el tamaño del icono play/pause sea de 30px 30px */
             font-size: 1.25rem;
-            min-width: 44px;
-            min-height: 44px;
             background-color: #dee2e6;
             color: #0d1117;
             aspect-ratio: 1/1;
@@ -320,6 +320,10 @@
         }
 
         /* End dropdown styles */
+
+        .my-1 {
+            margin: 1rem 0;
+        }
     </style>
 </head>
 
@@ -346,7 +350,7 @@
             </div>
 
             <!-- Current time slider -->
-            <div class="mb-1">
+            <div class="">
                 <div class="flex space-between fs-12" style="line-height: 8px;">
                     <span id="current-time">0:00</span>
                     <span id="countdown">-0:00</span>
@@ -357,7 +361,7 @@
             </div>
 
             <!-- Controls -->
-            <div class="mb-1 flex space-between">
+            <div class="flex space-between my-1">
                 <!-- Shuffle btn -->
                 <button id="shuffle-btn" title="Activar reproducción aleatoria">
                     <!-- Shuffle icon -->
