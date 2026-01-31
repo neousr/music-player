@@ -207,7 +207,14 @@
 
             cursor: pointer;
             transition-duration: 0.4s;
+
+            /* min-block-size: 32px; */
+            /* min-inline-size: 32px; */
         }
+
+        /* button:hover {
+            background-color: rgba(242, 238, 232, .2);
+        } */
 
         #play-btn {
             min-block-size: 44px;
@@ -984,35 +991,6 @@
 
     <!-- https://www.w3schools.com/jsref/default.asp -->
     <!-- https://www.w3schools.com/js/js_string_methods.asp -->
-
-    <!-- const playlist = [
-    { id: 1, name: "Arena Hash - Cómo Te Va Mi Amor.m4a", duration: 329.584036 },
-    { id: 2, name: "Pedro Suárez Vértiz - Alguien Que Bese Como tú.m4a", duration: 210.581768 },
-    { id: 3, name: "Pedro Suárez Vértiz - Como Las Mariposas.m4a", duration: 235.47356 }
-    ];
-
-    // Fisher–Yates shuffle (in-place)
-    function shuffle(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    }
-
-    // Restaurar orden original usando id
-    function resetOriginalOrder(arr) {
-    arr.sort((a, b) => a.id - b.id);
-    }
-
-    // --- Ejemplo de uso ---
-
-    console.log("Original:", playlist.map(t => t.name));
-
-    shuffle(playlist);
-    console.log("Mezclada:", playlist.map(t => t.name));
-
-    resetOriginalOrder(playlist);
-    console.log("Restaurada:", playlist.map(t => t.name)); -->
 
 </body>
 
