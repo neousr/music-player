@@ -494,7 +494,7 @@
 
         const downloadLink = d.createElement('a');
 
-        let songs, songsCopy, numberOfSongs, songIndex;
+        let songs, numberOfSongs, songIndex;
 
         /*[
             { id: 1, artist: "Pedro Suárez Vértiz", title: "Te siento de sólo pensar", url: "https://neobte.github.io/music-player/audio/rock/Pedro%20Su%C3%A1rez%20V%C3%A9rtiz%20-%20Te%20siento%20de%20s%C3%B3lo%20pensar.m4a" },
@@ -521,7 +521,7 @@
 
         d.addEventListener("DOMContentLoaded", e => {
             init();
-        })
+        });
 
         const init = () => {
 
@@ -544,10 +544,10 @@
         }
 
         const handleResponse = response => {
-            // songs = JSON.parse(response).slice(0, 7);
+            // songs = JSON.parse(response).slice(0, 6);
             songs = JSON.parse(response);
             // console.table(songs);
-            songsCopy = [...songs];
+            // const songsCopy = structuredClone(songs);
             numberOfSongs = songs.length;
             songIndex = 0;
 
@@ -678,6 +678,10 @@
 
                 playBtn.children[0].style.display = "inline";
                 playBtn.children[1].style.display = "none";
+
+                songIndex = 0;
+                loadSong(songIndex);
+                updateRowActive();
                 return;
             }
             forwardBtn.click();
@@ -809,24 +813,25 @@
             if (audioPlayer.src === "") return;
             isShuffle = !isShuffle;
             if (isShuffle) {
-                // Buscar el índice de la canción en reproducción
+                // Buscar el índice de la canción actualmente en reproducción
                 const index = songs.findIndex(song => song.id === +(audioPlayer.dataset.songId));
                 // Extraer o eliminar la canción del array
                 const currentlyPlayingSong = songs.splice(index, 1)[0];
-                // Mezclar el array sin la canción en reproducción
+                // Mezclar el array in place sin la canción que se encontraba en reproducción
                 shuffle(songs);
-                // Insertar la canción en el índice cero despues de la mezcla
+                // Insertar la canción que se encontraba sonando en el índice cero despues de la mezcla
                 songs.unshift(currentlyPlayingSong);
-                // Seteamos songIndex a cero
+                // Seteamos songIndex a cero, de forma que la proxima canción sea el índice 1
                 songIndex = 0;
                 // console.table(songs);
                 shuffleBtn.title = "Desactivar reproducción aleatoria";
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "inline";
             } else {
-                songIndex = songsCopy.findIndex(song => song.id === +(audioPlayer.dataset.songId));
-                songs = [...songsCopy];
-                // console.table(songs);
+                // Devolvemos el orden original, ordenando el array de objetos por la clave id
+                songs.sort((a, b) => a.id - b.id);
+                songIndex = songs.findIndex(song => song.id === +(audioPlayer.dataset.songId));
+
                 shuffleBtn.title = "Activar reproducción aleatoria";
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "none";
@@ -836,29 +841,29 @@
         // Format time in hh:mm:ss or mm:ss
         const formatTime = (seconds, format = 0) => {
             if (!isFinite(seconds) || seconds <= 0) return "0:00";
-            // entero mod entero = entero
-            const hours = (seconds / 3600) | 0; // Hours calculation
-            const minutes = ((seconds / 60) | 0) % 60; // Minutes calculation
-            const remainingSeconds = (seconds | 0) % 60; // Whole seconds
+            // Int mod Int = Int
+            const h = Math.floor(seconds / 3600); // hours calculation
+            const min = Math.floor(seconds / 60) % 60; // min calculation
+            const s = Math.floor(seconds) % 60; // Whole seconds
 
             if (format === 0) {
-                return hours > 0
-                    ? `${/*hours < 10 ? "0" + hours : */hours}:${minutes < 10 ? "0" + minutes : minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`
-                    : `${/*minutes < 10 ? "0" + minutes : */minutes}:${remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds}`;
+                return h > 0
+                    ? `${/*h < 10 ? "0" + h : */h}:${min < 10 ? "0" + min : min}:${s < 10 ? "0" + s : s}`
+                    : `${/*min < 10 ? "0" + min : */min}:${s < 10 ? "0" + s : s}`;
             }
 
-            return hours > 0
-                ? // Show hours minutes seconds format => 10 h 8 min 47 s
-                `${hours} h ${minutes} min ${remainingSeconds} s`
-                : // Show minutes seconds format => 8 min 47 s
-                `${minutes} min ${remainingSeconds} s`;
+            return h > 0
+                ? // Show hours min seconds format => 10 h 8 min 47 s
+                `${h} h ${min} min ${s} s`
+                : // Show min seconds format => 8 min 47 s
+                `${min} min ${s} s`;
         };
 
         // https://introcs.cs.princeton.edu/java/14array/Deck.java.html
         const shuffle = arr => {
-            const len = arr.length;
-            for (let i = 0; i < len; i++) {
-                const r = i + parseInt(Math.random() * (len - i));
+            const n = arr.length;
+            for (let i = 0; i < n; i++) {
+                const r = i + Math.floor(Math.random() * (n - i));
                 [arr[i], arr[r]] = [arr[r], arr[i]];
             }
             return arr;
@@ -948,9 +953,61 @@
             }
         }
 
+        const rmWhiteSpaces = text => {
+            return text.trim().replace(/\s\s+/, " ");
+        }
+
+        const out = (message = null) => {
+            const div = document.createElement("div");
+            div.className = "message";
+            if (message === null) {
+                div.textContent = "null";
+            } else if (message === undefined) {
+                div.textContent = "undefined";
+            } else if (message instanceof HTMLElement) {
+                div.textContent = message.outerHTML;
+            } else if (Array.isArray(message) || typeof message === "object") {
+                div.textContent = JSON.stringify(message, null, 2);
+            } else {
+                div.textContent = message;
+            }
+            document.body.appendChild(div);
+        }
+
     </script>
 
-    <!-- https://www.youtube.com/watch?v=PDsLvd3lnK0 Carrión (Luisito Carrion Oficial) -->
+    <!-- https://www.w3schools.com/jsref/default.asp -->
+    <!-- https://www.w3schools.com/js/js_string_methods.asp -->
+
+    <!-- const playlist = [
+    { id: 1, name: "Arena Hash - Cómo Te Va Mi Amor.m4a", duration: 329.584036 },
+    { id: 2, name: "Pedro Suárez Vértiz - Alguien Que Bese Como tú.m4a", duration: 210.581768 },
+    { id: 3, name: "Pedro Suárez Vértiz - Como Las Mariposas.m4a", duration: 235.47356 }
+    ];
+
+    // Fisher–Yates shuffle (in-place)
+    function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    }
+
+    // Restaurar orden original usando id
+    function resetOriginalOrder(arr) {
+    arr.sort((a, b) => a.id - b.id);
+    }
+
+    // --- Ejemplo de uso ---
+
+    console.log("Original:", playlist.map(t => t.name));
+
+    shuffle(playlist);
+    console.log("Mezclada:", playlist.map(t => t.name));
+
+    resetOriginalOrder(playlist);
+    console.log("Restaurada:", playlist.map(t => t.name)); -->
+
 </body>
 
 </html>
