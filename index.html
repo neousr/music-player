@@ -768,14 +768,20 @@
 
         backwardBtn.addEventListener("click", e => {
             if (audioPlayer.src === "") return;
-            songIndex = (songIndex - 1 + numberOfSongs) % numberOfSongs;
-            if (!audioPlayer.paused) {
-                loadSong(songIndex);
-                playAudio();
+
+            // Umbral de 5 segundos.
+            if (audioPlayer.currentTime > 5) {
+                audioPlayer.currentTime = 0;
             } else {
-                loadSong(songIndex);
+                songIndex = (songIndex - 1 + numberOfSongs) % numberOfSongs;
+                if (!audioPlayer.paused) {
+                    loadSong(songIndex);
+                    playAudio();
+                } else {
+                    loadSong(songIndex);
+                }
+                updateRowActive();
             }
-            updateRowActive();
         });
 
         repeatBtn.addEventListener("click", e => {
