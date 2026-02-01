@@ -528,6 +528,20 @@
 
         d.addEventListener("DOMContentLoaded", e => {
             init();
+
+            // Request test
+            // const request_url = "https://www.correoargentino.com.ar/sites/all/modules/custom/ca_forms/api/wsFacade.php";
+            // const data = {
+            //     action: "localidades",
+            //     localidad: "none",
+            //     calle: "",
+            //     altura: "",
+            //     provincia: "B" // Buenos Aires
+            // };
+
+            // sendFetchHttpRequest(request_url, (response) => {
+            //     echo(response);
+            // }, "POST", data);
         });
 
         const init = () => {
@@ -545,7 +559,9 @@
                 if (previousSelectedPlaylist === playlistName) return;
 
                 previousSelectedPlaylist = playlistName;
-                sendHttpRequest("GET", audioSourcePath + playlistName + "/playlist.json", null, handleResponse);
+                // sendHttpRequest("GET", audioSourcePath + playlistName + "/playlist.json", null, handleResponse);
+                const request_url = audioSourcePath + playlistName + "/playlist.json";
+                sendFetchHttpRequest(request_url, handleResponse);
             });
 
         }
@@ -553,6 +569,8 @@
         const handleResponse = response => {
             // songs = JSON.parse(response).slice(0, 6);
             songs = JSON.parse(response);
+            // Si recibimos la respuesta YA PARSEADA ESTARIAMOS HACIENDO LO SIGUIENTE:
+            // songs = [{}, {}, {}, ...], asignación de referencia
             // console.table(songs);
             // const songsCopy = structuredClone(songs);
             numberOfSongs = songs.length;
@@ -882,6 +900,50 @@
             return arr;
         };
 
+        // https://fetch.spec.whatwg.org/
+        // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+        const sendFetchHttpRequest = async (url, callback, method = "GET", data = {}) => {
+            method = method.toUpperCase();
+
+            const options = {
+                method,
+                headers: {}
+            };
+
+            if (method === 'GET') {
+                const queryString = new URLSearchParams(data).toString();
+                url += queryString ? `?${queryString}` : '';
+            }
+
+            if (method === 'POST') {
+                options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                // options.headers['Accept'] = "application/json, text/javascript, */*; q=0.01";
+                // options.headers['Accept-Language'] = "es-AR,es;q=0.9,en-US;q=0.8,en;q=0.7";
+                // options.headers['Sec-Fetch-Mode'] = "cors";
+                // options.headers['Sec-Fetch-Site'] = "same-origin";
+                options.body = new URLSearchParams(data).toString();
+                // options.mode = "cors";
+                // options.referrer = "https://www.correoargentino.com.ar/";
+                // options.body = "action=localidades&localidad=none&calle=&altura=&provincia=B"
+            }
+
+            try {
+                const response = await fetch(url + (/\?/.test(url) ? "&" : "?") + new Date().getTime(), options);
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+                const contentType = response.headers.get("content-type");
+                // console.log(contentType); // application/json; charset=utf-8
+                if (contentType &&
+                    contentType.toLowerCase().indexOf("application/json") >= 0) {
+                    // Content-Type: text/html; charset=UTF-8
+                    // callback(await response.json()); // Esto asignaría la referencia a la variable "songs"
+                    callback(await response.text()); // Para parsear el string con JSON.parse y asignar a la variable "songs"
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+
         // Send request
         function sendHttpRequest(method, url, data, callback) {
             const xhr = getXhr();
@@ -970,9 +1032,11 @@
             return text.trim().replace(/\s\s+/, " ");
         }
 
-        const out = (message = null) => {
+        const echo = (message = null) => {
             const div = document.createElement("div");
-            div.className = "message";
+            div.style.cssText = `margin-top: .25rem;
+    background-color: #f1f3f4;color: #000 !important;
+    padding: .8rem;border-radius: .25rem;`;
             if (message === null) {
                 div.textContent = "null";
             } else if (message === undefined) {
@@ -985,6 +1049,7 @@
                 div.textContent = message;
             }
             document.body.appendChild(div);
+            // setTimeout(() => { div.remove(); }, 10000);
         }
 
     </script>
