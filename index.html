@@ -14,6 +14,11 @@
         :root {
             --color: #39FF14;
             --bg: #0b0e19;
+
+            --progress-color: rgb(0, 255, 0);
+            --track-color: #e9e9ed;
+            --slider-height: 3px;
+            --slider-br: .25rem;
         }
 
         * {
@@ -41,66 +46,57 @@
             margin-left: auto;
         }
 
-        /* Input range styling */
+        /* Styles input range */
         .slider {
             -webkit-appearance: none;
             width: 100%;
-            margin: 0;
-            background: transparent;
-            /* height: 4px; */
+            background-color: transparent;
+            cursor: pointer;
         }
 
         .slider:focus {
             outline: none;
         }
 
-        /* Google Chrome */
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            margin-top: -5px;
-            height: 13px;
-            width: 13px;
-            border-radius: 50%;
-            background-color: var(--color);
-            cursor: pointer;
-        }
-
-        .slider::-webkit-slider-runnable-track {
-            height: 3px;
-            cursor: pointer;
-            background-color: var(--color);
-            border-radius: 2px;
-        }
-
-        .slider:focus::-webkit-slider-runnable-track {
-            background: #fff;
-        }
-
         /* Mozilla Firefox */
-        .slider::-moz-range-thumb {
-            height: 13px;
-            width: 13px;
-            border: none;
-            border-radius: 50%;
-            background-color: var(--color);
-            cursor: pointer;
+        .slider::-moz-range-track {
+            background-color: var(--track-color);
+            height: var(--slider-height);
+            border-radius: var(--slider-br);
         }
 
         .slider::-moz-range-progress {
-            background-color: var(--color);
-            height: 3px;
-            border-radius: 2px;
-            cursor: pointer;
+            background-color: var(--progress-color);
+            height: var(--slider-height);
+            border-radius: var(--slider-br);
         }
 
-        .slider::-moz-range-track {
-            height: 3px;
-            cursor: pointer;
-            background-color: #fff;
-            border-radius: 2px;
+        .slider::-moz-range-thumb {
+            border: none;
+            background-color: var(--progress-color);
         }
 
-        /* End input range styling */
+        /* Google Chrome */
+        .slider::-webkit-slider-runnable-track {
+            background-color: var(--track-color);
+            height: var(--slider-height);
+            border-radius: var(--slider-br);
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            background-color: var(--progress-color);
+            height: 13px;
+            width: 13px;
+            border-radius: 50%;
+            margin-top: -5px;
+        }
+
+        .slider:focus::-webkit-slider-runnable-track {
+            background-color: var(--progress-color);
+        }
+
+        /* End Input range styles */
 
         .flex {
             display: flex;
@@ -158,20 +154,6 @@
 
         .table tr td:nth-child(1) {
             width: 14%;
-        }
-
-        .table tr td.song-number::before {
-            /* content: url(icons/classic/center/download.svg);
-            height: 1.5em;
-            width: 1.5em;
-            display: inline-block;
-            vertical-align: middle; */
-            /* opacity: 0; */
-            /* transition: opacity 0.2s; */
-        }
-
-        .table tr td.song-number:hover {
-            /* color: transparent; */
         }
 
         .table tr td:nth-child(2) {
@@ -694,7 +676,7 @@
 
         currentTimeSlider.addEventListener("input", e => {
             if (currentTimeSlider.disabled) return;
-            audioPlayer.currentTime = +currentTimeSlider.value;
+            audioPlayer.currentTime = Number(currentTimeSlider.value);
         });
 
         audioPlayer.addEventListener("ended", e => {
@@ -716,7 +698,7 @@
         // Volume slider
         volumeSlider.addEventListener("input", () => {
             volumeDisplay.textContent = volumeSlider.value;
-            audioPlayer.volume = volumeSlider.value / 100; // number
+            audioPlayer.volume = Number(volumeSlider.value) / 100; // number
             if (volumeSlider.value === "0") {
                 audioPlayer.muted = true;
                 currentVolume = 0.5; // 50 %
@@ -726,7 +708,7 @@
                 volumeBtn.children[1].style.display = "inline";
             } else {
                 audioPlayer.muted = false;
-                currentVolume = volumeSlider.value / 100; //  Values are between 0 y 100, "33" / 100 = 0.33 number
+                currentVolume = Number(volumeSlider.value) / 100; //  Values are between 0 y 100, "33" / 100 = 0.33 number
                 volumeBtn.title = "Silenciar";
 
                 volumeBtn.children[0].style.display = "inline";
