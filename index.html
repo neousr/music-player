@@ -515,20 +515,6 @@
 
         d.addEventListener("DOMContentLoaded", e => {
             init();
-
-            // Request test
-            // const request_url = "https://www.correoargentino.com.ar/sites/all/modules/custom/ca_forms/api/wsFacade.php";
-            // const data = {
-            //     action: "localidades",
-            //     localidad: "none",
-            //     calle: "",
-            //     altura: "",
-            //     provincia: "B" // Buenos Aires
-            // };
-
-            // sendFetchHttpRequest(request_url, (response) => {
-            //     echo(response);
-            // }, "POST", data);
         });
 
         const init = () => {
@@ -595,7 +581,7 @@
             artist.textContent = rmExt(songs[songIndex].name);
             setAnimation(artist);
 
-            numberOfSong.textContent = songIndex + 1;
+            numberOfSong.textContent = isShuffle ? songs[songIndex].id : songIndex + 1;
         }
 
         const setAnimation = title => {
@@ -637,6 +623,7 @@
             audioPlayer.preload = "metadata";
 
             audioPlayer.dataset.songId = song.id;
+            numberOfSong.textContent = song.id;
             artist.textContent = rmExt(song.name);
 
             setAnimation(artist);
