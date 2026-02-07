@@ -335,7 +335,7 @@
 
             <!-- Song Info -->
             <div class="text-center" style="margin: 1.25rem 0;position: relative;overflow: hidden;">
-                <p id="artist" style="white-space: nowrap;animation: none;">Nada esta sonando...</p>
+                <p id="song-info" style="white-space: nowrap;animation: none;">Nada esta sonando...</p>
             </div>
 
             <!-- Current time slider -->
@@ -469,9 +469,8 @@
         const volumeBtn = d.getElementById("volume-btn");
         const volumeDisplay = d.getElementById("volume-display");
 
-        const artist = d.getElementById("artist");
-        const parentElementOffsetWidth = artist.parentElement.offsetWidth;
-        const title = d.getElementById("title");
+        const songInfo = d.getElementById("song-info");
+        const parentElementOffsetWidth = songInfo.parentElement.offsetWidth;
 
         const playBtn = d.getElementById("play-btn");
         const forwardBtn = d.getElementById("forward-btn");
@@ -540,13 +539,16 @@
         }
 
         const handleResponse = response => {
+
             // songs = JSON.parse(response).slice(0, 6);
-            songs = JSON.parse(response);
+            const playlist = JSON.parse(response);
+
+            songs = playlist.tracks.items;
             // Si recibimos la respuesta YA PARSEADA ESTARIAMOS HACIENDO LO SIGUIENTE:
             // songs = [{}, {}, {}, ...], asignación de referencia
             // console.table(songs);
             // const songsCopy = structuredClone(songs);
-            numberOfSongs = songs.length;
+            numberOfSongs = playlist.tracks.total;
             songIndex = 0;
 
             songsTotal.textContent = numberOfSongs;
@@ -578,8 +580,8 @@
             audioPlayer.load();
             audioPlayer.preload = "metadata";
             audioPlayer.dataset.songId = songs[songIndex].id;
-            artist.textContent = rmExt(songs[songIndex].name);
-            setAnimation(artist);
+            songInfo.textContent = `${songs[songIndex].artist} - ${songs[songIndex].title}`;
+            setAnimation(songInfo);
 
             numberOfSong.textContent = isShuffle ? songs[songIndex].id : songIndex + 1;
         }
@@ -599,7 +601,7 @@
             for (let idx = 0; idx < numberOfSongs; idx++) {
                 const tr = d.createElement("tr");
                 tr.dataset.songId = songs[idx].id;
-                tr.innerHTML = `<td>${idx + 1}</td><td>${parseName(songs[idx].name)}</td><td>${formatTime(songs[idx].duration)}</td>`;
+                tr.innerHTML = `<td>${idx + 1}</td><td>${songs[idx].title} - ${songs[idx].artist}</td><td>${formatTime(songs[idx].duration)}</td>`;
                 fragment.appendChild(tr);
             }
             tbody.appendChild(fragment);
@@ -624,9 +626,9 @@
 
             audioPlayer.dataset.songId = song.id;
             numberOfSong.textContent = song.id;
-            artist.textContent = rmExt(song.name);
+            songInfo.textContent = `${song.artist} - ${song.title}`;
 
-            setAnimation(artist);
+            setAnimation(songInfo);
             playAudio();
 
             d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
