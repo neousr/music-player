@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio File Information</title>
+</head>
+
+<body>
+    <h1>Select Audio Files</h1>
+    <input type="file" id="input-file" multiple accept="audio/*">
+
+    <script>
+
+        const inputFile = document.getElementById("input-file");
+
+        const downloadLink = document.createElement('a');
+
+        let entriesTotal;
+
+        const rmWhiteSpaces = text => {
+            return text.replace(/\s\s+/g, " ").trim();
+        }
+
+        const getArtist = name => {
+            return name.slice(0, name.indexOf(" - "));
+        }
+
+        const getTitle = name => {
+            return name.slice(name.indexOf(" - ") + 3, - 4);
+        }
+
+        const getTrackInfo = name => {
+            name = rmWhiteSpaces(name);
+            return {
+                artist: getArtist(name),
+                title: getTitle(name)
+            }
+        }
+
+        inputFile.addEventListener("change", () => {
+
+            if (inputFile.files.length < 1) return;
+
+            const files = inputFile.files;
+
+            entriesTotal = files.length;
+
+            const promises = new Array(entriesTotal);
+
+            for (let i = 0; i < entriesTotal; i++) {
+
+                const trackInfo = getTrackInfo(files[i].name);
+
+                const objectUrl = URL.createObjectURL(files[i]);
+
+                const audio = new Audio(objectUrl);
+                audio.preload = "metadata";
+
+                promises[i] = new Promise(resolve => {
+
+                    audio.addEventListener("loadedmetadata", () => {
+
+                        resolve({
+                            id: i + 1,
+                            artist: trackInfo.artist,
+                            title: trackInfo.title,
+                            duration: audio.duration, // Obtenemos la duración de la pista de audio
+                            // url: objectUrl,
+                            size: files[i].size,
+                            type: files[i].type
+                        });
+
+                    });
+
+                    audio.load();
+
+                });
+            }
+
+            // Wait for all promises to resolve
+            Promise.all(promises).then(items => {
+
+                const playlist = {
+                    id: 1,
+                    name: "salsa",
+                    description: "Lo mejor de la salsa romántica",
+                    tracks: {
+                        total: entriesTotal,
+                        items
+                    }
+                }
+
+                const jsonFile = new Blob([JSON.stringify(playlist, null, 2)], { type: 'application/json' });
+
+                const jsonUrl = URL.createObjectURL(jsonFile);
+
+                // Trigger file download
+                downloadLink.href = jsonUrl;
+
+                downloadLink.download = 'playlist.json';
+
+                downloadLink.click();
+
+                // Clean up the URL object after download
+                URL.revokeObjectURL(jsonUrl);
+
+            });
+
+        });
+
+        // https://www.youtube.com/watch?v=w_fNDZZaPhI
+        // https://www.youtube.com/watch?v=a9ECcUvtCXM
+        // https://www.youtube.com/watch?v=DvyCbevQbtI
+
+    </script>
+</body>
+
+</html>
