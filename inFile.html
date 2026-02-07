@@ -50,25 +50,10 @@
 
         "use strict";
 
-        const d = document;
+        const inputFile = document.getElementById("input-file");
+        const downloadLink = document.createElement("a");
 
-        // Track_id
-        // Name
-        // Album_id
-        // Genre_id
-        // MediaType_Id
-        // Composer
-        // Milliseconds
-        // Bytes
-        // UnitPrice
-        // Album
-        // MediaType
-        // Genre
-
-        const inputFile = d.getElementById("input-file");
-        const downloadLink = d.createElement("a");
-
-        let tracks, fileListLen;
+        let fileListLen;
         const filename = "playlist.json";
 
         const audio = new Audio();
@@ -115,12 +100,13 @@
 
         const loadDurations = async fileList => {
 
-            tracks = new Array(fileListLen);
+            const tracks = new Array(fileListLen);
 
             for (let i = 0; i < fileListLen; i++) {
 
                 audio.pause(); // por seguridad
                 const blobURL = URL.createObjectURL(fileList[i]);
+
                 audio.src = blobURL; // cambiar fuente
                 audio.load(); // forzar carga
 
@@ -136,17 +122,12 @@
                 };
 
                 try {
-
                     track.duration = await waitForMetadata(audio);
-
                 } catch (error) {
-
                     console.error("❌", fileList[i], error.message);
-
                 }
 
                 tracks[i] = track;
-
             }
 
             return tracks;
@@ -156,7 +137,7 @@
 
             inputFile.addEventListener("change", async e => {
 
-                if (inputFile.files.length < 1) { return; }
+                if (inputFile.files.length < 1) return;
 
                 const fileList = inputFile.files;
 
@@ -172,9 +153,7 @@
                     }
                 }
 
-                const jsonStr = JSON.stringify(playlist, null, 2);
-
-                const blob = new Blob([jsonStr], { type: "application/json" });
+                const blob = new Blob([JSON.stringify(playlist, null, 2)], { type: "application/json" });
 
                 const url = URL.createObjectURL(blob);
 
@@ -182,18 +161,18 @@
 
                 downloadLink.download = filename;
 
-                d.body.appendChild(downloadLink);
+                // d.body.appendChild(downloadLink);
 
                 downloadLink.click();
 
-                d.body.removeChild(downloadLink);
+                // d.body.removeChild(downloadLink);
 
                 URL.revokeObjectURL(url);
 
             });
         }
 
-        d.addEventListener("DOMContentLoaded", e => {
+        document.addEventListener("DOMContentLoaded", e => {
 
             init();
 
