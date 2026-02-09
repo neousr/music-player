@@ -114,12 +114,12 @@
 
                 const track = {
                     track_id: i + 1,
-                    name: fileList[i].name,
+                    name: fileList[i].name, // filename without path
                     artist: trackInfo.artist,
                     title: trackInfo.title,
-                    duration: 0,
-                    size: fileList[i].size,
-                    type: fileList[i].type
+                    duration: 0, // Duración de la pista de audio en segundos
+                    size: fileList[i].size, // The size of the byte sequence in number of bytes
+                    type: fileList[i].type // The media type of the Blob
                 };
 
                 try {

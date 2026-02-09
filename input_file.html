@@ -45,6 +45,9 @@
 
             const files = inputFile.files;
 
+            console.table(files[0]);
+            console.log(Object.keys(Array.from(files[0]))); return;
+
             entriesTotal = files.length;
 
             const promises = new Array(entriesTotal);
@@ -60,17 +63,16 @@
 
                 promises[i] = new Promise(resolve => {
 
-                    audio.addEventListener("loadedmetadata", () => {
+                    audio.addEventListener("loadedmetadata", event => {
 
                         resolve({
-                            id: i + 1,
-                            name: files[i].name,
+                            id: i + 1, // ID
+                            name: files[i].name, // filename without path
                             artist: trackInfo.artist,
                             title: trackInfo.title,
-                            duration: audio.duration, // Obtenemos la duración de la pista de audio
-                            // url: objectUrl,
-                            size: files[i].size,
-                            type: files[i].type
+                            duration: audio.duration, // Duración de la pista de audio en segundos
+                            size: files[i].size, // The size of the byte sequence in number of bytes
+                            type: files[i].type // The media type of the Blob
                         });
 
                     });
