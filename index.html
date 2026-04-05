@@ -1009,7 +1009,7 @@
         }
 
         const rmWhiteSpaces = text => {
-            return text.trim().replace(/\s\s+/, " ");
+            return text.trim().replace(/\s\s+/g, " ");
         }
 
         const echo = (message = null) => {
