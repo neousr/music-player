@@ -962,7 +962,9 @@
         }
 
         const parseName = name => {
-            return `${name.slice(name.indexOf(' - ') + 3, -4)} - ${name.slice(0, name.indexOf(' - '))}`;
+            const dash = name.indexOf(' - ');
+            const dot = name.lastIndexOf(".");
+            return name.slice(dash + 3, dot) + " - " + name.slice(0, dash);
         }
 
         const rmExt = name => {
