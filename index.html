@@ -19,6 +19,10 @@
             --track-color: #e9e9ed;
             --slider-height: 3px;
             --slider-br: .25rem;
+
+            /* gris medio (inactivo) */
+            --color-neutral: #9ca3af;
+
         }
 
         * {
@@ -58,6 +62,11 @@
             outline: none;
         }
 
+        .slider:disabled {
+            cursor: default;
+            opacity: .3;
+        }
+
         /* Mozilla Firefox */
         .slider::-moz-range-track {
             background-color: var(--track-color);
@@ -74,6 +83,17 @@
         .slider::-moz-range-thumb {
             border: none;
             background-color: var(--progress-color);
+        }
+
+        .slider:disabled::-moz-range-thumb {
+            height: 0;
+            width: 0;
+        }
+
+        .slider:not(:disabled):hover::-moz-range-thumb {
+            height: 1rem;
+            width: 1rem;
+            border-radius: 50%;
         }
 
         /* Google Chrome */
@@ -94,6 +114,12 @@
 
         .slider:focus::-webkit-slider-runnable-track {
             background-color: var(--track-color);
+        }
+
+        .slider:not(:disabled):hover::-webkit-slider-thumb {
+            height: 1rem;
+            width: 1rem;
+            border-radius: 50%;
         }
 
         /* End Input range styles */
@@ -173,11 +199,15 @@
             text-align: right;
         }
 
+        .current-time-wrapper {
+            color: rgba(109, 109, 109, 1);
+        }
+
         button {
             background: none;
-            color: #dee2e6;
             border: none;
             outline: none;
+            color: #a8b3bd;
             /* Teniendo la fuente en 1rem o 16px, el tamaño del icono es de 24px 24px */
             /* Teniendo la fuente en 0.917 rem, el tamaño del icono es de 22.008px 22.008px*/
             font-size: 1rem;
@@ -194,9 +224,19 @@
             /* min-inline-size: 32px; */
         }
 
-        /* button:hover {
-            background-color: rgba(242, 238, 232, .2);
-        } */
+        /* HOVER solo si está activo */
+        button:not(:disabled):hover {
+            color: #dee2e6;
+        }
+
+        button:disabled {
+            color: rgba(109, 109, 109, 1);
+            cursor: not-allowed;
+        }
+
+        #play-btn:disabled {
+            background-color: rgba(109, 109, 109, 1);
+        }
 
         #play-btn {
             min-block-size: 44px;
@@ -313,6 +353,7 @@
         .my-1 {
             margin: 1rem 0;
         }
+
     </style>
 </head>
 
@@ -339,20 +380,19 @@
             </div>
 
             <!-- Current time slider -->
-            <div class="">
+            <div class="current-time-wrapper">
                 <div class="flex space-between fs-12" style="line-height: 8px;">
-                    <span id="current-time">0:00</span>
+                    <span id="current-time">-:--</span>
                     <span id="countdown" class="hidden">-0:00</span>
                     <!-- <span>Showing start of entries_total</span> -->
-                    <p><span id="number-of-song">0</span>/<span id="songs-total">0</span></p>
-                    <span id="duration">0:00</span>
+                    <p><span id="number-of-song">-</span>/<span id="songs-total">-</span></p>
+                    <span id="duration">-:--</span>
                 </div>
-                <input type="range" id="current-time-slider" class="slider" min="0" max="100" value="0" step=".01"
-                    disabled>
+                <input type="range" id="current-time-slider" class="slider" min="0" max="100" value="0" step=".01">
             </div>
 
             <!-- Controls -->
-            <div class="flex space-between my-1">
+            <div class="flex space-between my-1 controls">
                 <!-- Shuffle btn -->
                 <button id="shuffle-btn" title="Activar reproducción aleatoria">
                     <!-- Shuffle icon -->
@@ -460,6 +500,9 @@
 
         const d = document;
 
+        const pageTitle = d.querySelector("title");
+        pageTitle.textContent = "Neobte - Music Player";
+
         const currentTimeSlider = d.getElementById("current-time-slider");
         const currentTime = d.getElementById("current-time");
         const duration = d.getElementById("duration");
@@ -486,6 +529,9 @@
         const tbody = d.getElementById("tbody");
 
         const downloadLink = d.createElement('a');
+
+        // Botones de controles
+        const buttons = d.querySelectorAll(".controls button");
 
         let songs, numberOfSongs, songIndex;
 
@@ -518,11 +564,12 @@
 
         const init = () => {
 
-            // Al recargar la página reseteamos los valores
+            // Al recargar la página reseteamos elementos
             selectPlaylist.value = "";
             currentTimeSlider.disabled = true;
             currentTimeSlider.value = 0;
             volumeSlider.value = 100;
+            buttons.forEach(b => b.disabled = true);
 
             selectPlaylist.addEventListener("change", e => {
                 if (selectPlaylist.selectedIndex === 0) return;
@@ -535,7 +582,6 @@
                 const request_url = audioSourcePath + playlistName + "/playlist.json";
                 sendFetchHttpRequest(request_url, handleResponse);
             });
-
         }
 
         const handleResponse = response => {
@@ -544,6 +590,8 @@
             const playlist = JSON.parse(response);
 
             songs = playlist.tracks.items;
+            // console.log(songs)
+            songs.sort((a, b) => a.title.localeCompare(b.title));
             // Si recibimos la respuesta YA PARSEADA ESTARIAMOS HACIENDO LO SIGUIENTE:
             // songs = [{}, {}, {}, ...], asignación de referencia
             // console.table(songs);
@@ -565,7 +613,14 @@
                 d.getElementById("playlist-duration-display").textContent = getPlaylistDuration(songs);
 
                 if (currentTimeSlider.disabled) {
+                    // Habilitamos la barra de tiempo
                     currentTimeSlider.disabled = false;
+                    // Habilitamos los botones de control
+                    for (let button of buttons) {
+                        button.disabled = false;
+                    }
+
+                    d.querySelector(".current-time-wrapper").style.color = "#a8b3bd";
                 }
 
                 if (isShuffle) {
@@ -581,6 +636,7 @@
             audioPlayer.preload = "metadata";
             audioPlayer.dataset.songId = songs[songIndex].id;
             songInfo.textContent = `${songs[songIndex].artist} - ${songs[songIndex].title}`;
+            pageTitle.textContent = `${songs[songIndex].title} - ${songs[songIndex].artist}`;
             setAnimation(songInfo);
 
             numberOfSong.textContent = isShuffle ? songs[songIndex].id : songIndex + 1;
