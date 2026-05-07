@@ -859,6 +859,8 @@
 
                 repeatBtn.children[1].style.display = "none";
                 repeatBtn.children[0].style.display = "inline";
+
+                repeatBtn.style.removeProperty("color");
                 return;
             }
             if (repeatState === 1) {
@@ -866,6 +868,7 @@
                 repeatBtn.title = "Repetir canción indefinidamente";
 
                 repeatBtn.children[0].querySelector("circle").style.display = "inline";
+                repeatBtn.style.color = "#67ff4d";
                 return;
             }
             if (repeatState === 2) {
@@ -899,6 +902,8 @@
                 shuffleBtn.title = "Desactivar reproducción aleatoria";
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "inline";
+
+                shuffleBtn.style.color = "#67ff4d";
             } else {
                 // Devolvemos el orden original, ordenando el array de objetos por la clave id
                 songs.sort((a, b) => a.id - b.id);
@@ -907,6 +912,8 @@
                 shuffleBtn.title = "Activar reproducción aleatoria";
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "none";
+
+                shuffleBtn.style.removeProperty("color");
             }
         });
 
