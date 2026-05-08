@@ -684,10 +684,10 @@
 
             if (!isShuffle) songIndex = tr.rowIndex;
             const song = getSongById(+tr.dataset.songId);
-
+            audioPlayer.pause();
+            audioPlayer.preload = "metadata";
             audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
             audioPlayer.load();
-            audioPlayer.preload = "metadata";
 
             audioPlayer.dataset.songId = song.id;
             numberOfSong.textContent = song.id;
