@@ -8,6 +8,8 @@
     <meta name="keywords"
         content="Audio Player, Music Player, Web Player, Music APP, Reproductor de Música, Reproductor de Audio, Reproductor Web de Audio">
     <link rel="shortcut icon" href="img/neobte_logo.png" type="image/png" sizes="16x16 32x32">
+    <!-- Preconnect (speed boost) -->
+    <link rel="preconnect" href="https://neobte.github.io" crossorigin>
     <title>Neobte - Music Player</title>
 
     <style>
@@ -636,9 +638,11 @@
         };
 
         const loadSong = songIndex => {
+            audioPlayer.pause();
+            audioPlayer.preload = "metadata";
             audioPlayer.src = audioSourcePath + playlistName + "/" + songs[songIndex].name;
             audioPlayer.load();
-            audioPlayer.preload = "metadata";
+            
             audioPlayer.dataset.songId = songs[songIndex].id;
             songInfo.textContent = `${songs[songIndex].artist} - ${songs[songIndex].title}`;
             pageTitle.textContent = `${songs[songIndex].title} - ${songs[songIndex].artist}`;
