@@ -678,7 +678,7 @@
             const song = getSongById(+tr.dataset.songId);
 
             try {
-                pauseAudio();
+                audioPlayer.pause();
                 audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
                 playAudio();
             
