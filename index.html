@@ -682,6 +682,7 @@
             for (let idx = 0; idx < numberOfSongs; idx++) {
                 const tr = d.createElement("tr");
                 tr.dataset.songId = songs[idx].id;
+                tr.classList.add("track");
                 tr.innerHTML = `<td>${idx + 1}</td><td>${songs[idx].title} - ${songs[idx].artist}</td><td>${formatTime(songs[idx].duration)}</td>`;
                 fragment.appendChild(tr);
             }
