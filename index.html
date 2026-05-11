@@ -546,6 +546,7 @@
         ];*/
 
         let audioPlayer = new Audio();
+        audioPlayer.preload = "metadata";
         // audioPlayer.controls = true;
         // d.body.appendChild(audioPlayer);
 
@@ -634,9 +635,7 @@
 
         const loadSong = songIndex => {
             audioPlayer.pause();
-            audioPlayer.preload = "metadata";
             audioPlayer.src = audioSourcePath + playlistName + "/" + songs[songIndex].name;
-            audioPlayer.load();
             
             audioPlayer.dataset.songId = songs[songIndex].id;
             songInfo.textContent = `${songs[songIndex].artist} - ${songs[songIndex].title}`;
@@ -674,24 +673,28 @@
             const tr = e.target.parentNode;
             if (tr.tagName !== "TR" || tr.classList.contains("playing")) return;
             if (previousRowActive) previousRowActive.classList.remove("playing");
-            tr.classList.add("playing");
-            previousRowActive = tr;
 
             if (!isShuffle) songIndex = tr.rowIndex;
             const song = getSongById(+tr.dataset.songId);
-            audioPlayer.pause();
-            audioPlayer.preload = "metadata";
-            audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
-            audioPlayer.load();
 
-            audioPlayer.dataset.songId = song.id;
-            numberOfSong.textContent = song.id;
-            songInfo.textContent = `${song.artist} - ${song.title}`;
+            try {
+                pauseAudio();
+                audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
+                playAudio();
+            
+                tr.classList.add("playing");
+                previousRowActive = tr;
 
-            setAnimation(songInfo);
-            playAudio();
+                audioPlayer.dataset.songId = song.id;
+                numberOfSong.textContent = song.id;
+                songInfo.textContent = `${song.artist} - ${song.title}`;
 
-            d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
+                setAnimation(songInfo);
+
+                d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
+            } catch (error) {
+                console.log("No se pudo reproducir", error);
+            }
         });
 
         const getSongById = id => {
@@ -802,8 +805,8 @@
             playBtn.children[1].style.display = "none";
         };
 
-        const playAudio = () => {
-            audioPlayer.play().catch((error) => { });
+        const playAudio = async () => {
+            await audioPlayer.play();
             playBtn.title = "Pausar";
 
             playBtn.children[0].style.display = "none";
