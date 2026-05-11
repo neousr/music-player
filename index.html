@@ -153,7 +153,7 @@
         }
 
         .playlist-container {
-            height: 272px;
+            height: 246px;
             overflow-y: auto;
             overflow-x: hidden;
             /* box-shadow: inset 0 0 3rem rgba(40, 48, 65, 1); */
@@ -170,7 +170,6 @@
             border-collapse: collapse;
             user-select: none;
             table-layout: fixed;
-            /* font-size: .75rem; */
         }
 
         .table tr {
@@ -178,34 +177,30 @@
         }
 
         .table tr:hover {
-            /* background-color: #283041; */
+            background-color: rgba(40, 48, 65, .5);
         }
 
         .table td {
-            padding: .875rem .25rem;
+            padding: 0.75rem 1rem;
         }
 
         .table tr td:nth-child(1) {
-            width: 14%;
+            width: 15%;
+            text-align: center;
         }
 
         .table tr td:nth-child(2) {
-            width: 60%;
+            width: 70%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .table tr td:nth-child(3) {
-            width: 18%;
-            text-align: right;
+            width: 15%;
+            text-align: center;
         }
-
-        .table tr td:nth-child(4) {
-            width: 8%;
-            text-align: right;
-        }
-
+        
         .current-time-wrapper {
             color: rgba(109, 109, 109, 1);
         }
@@ -258,11 +253,11 @@
 
         select {
             width: 100%;
-            padding: .25rem;
+            padding: 0.75rem 1rem;
             text-align: center;
             display: inline-block;
             border: none;
-            border-radius: .25rem;
+            border-radius: .5rem;
             background-color: #283041;
             color: #dee2e6;
             outline: none;
@@ -478,7 +473,7 @@
         </div>
 
         <!-- Select Playlist -->
-        <div class="text-center" style="margin-bottom: .5rem;">
+        <div class="text-center mb-1">
             <select id="playlist">
                 <option value="">🎧 Playlists</option>
                 <option value="my_playlist">🤷‍♂️ Julify</option>
