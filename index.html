@@ -241,13 +241,13 @@
             cursor: not-allowed;
         }
 
-        #play-btn:disabled {
+        #play-pause-btn:disabled {
             background-color: rgba(109, 109, 109, 1);
         }
 
-        #play-btn {
-            min-block-size: 44px;
-            min-inline-size: 44px;
+        #play-pause-btn {
+            min-block-size: 48px;
+            min-inline-size: 48px;
             /* Esto hará que el tamaño del icono play/pause sea de 30px 30px */
             font-size: 1.25rem;
             background-color: #dee2e6;
@@ -357,10 +357,30 @@
 
         /* End dropdown styles */
 
-        .my-1 {
-            margin: 1rem 0;
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        #volume-btn {
+            font-size: .75rem;
+            /* clave */
+            flex-shrink: 0;
+        }
+
+        #volume-value {
+            min-width: 40px;
+            font-size: .75rem;
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
     </style>
 </head>
 
@@ -388,7 +408,7 @@
 
             <!-- Current time slider -->
             <div class="current-time-wrapper">
-                <div class="flex space-between fs-12" style="line-height: 8px;">
+                <div class="flex space-between fs-12">
                     <span id="current-time">-:--</span>
                     <span id="countdown" class="hidden">-0:00</span>
                     <!-- <span>Showing start of entries_total</span> -->
@@ -399,9 +419,9 @@
             </div>
 
             <!-- Controls -->
-            <div class="flex space-between my-1 controls">
+            <div class="controls">
                 <!-- Shuffle btn -->
-                <button id="shuffle-btn" title="Activar reproducción aleatoria">
+                <button id="shuffle-btn" class="btn" title="Activar reproducción aleatoria">
                     <!-- Shuffle icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="50 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -410,7 +430,7 @@
                     </svg>
                 </button>
                 <!-- Backward btn -->
-                <button id="backward-btn" title="Anterior">
+                <button id="backward-btn" class="btn" title="Anterior">
                     <!-- Backward-step icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -418,7 +438,7 @@
                     </svg>
                 </button>
                 <!-- Play/pause btn -->
-                <button id="play-btn" title="Reproducir">
+                <button id="play-pause-btn" class="btn" title="Reproducir">
                     <!-- Play icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -431,7 +451,7 @@
                     </svg>
                 </button>
                 <!-- Forward btn -->
-                <button id="forward-btn" title="Siguente">
+                <button id="forward-btn" class="btn" title="Siguente">
                     <!-- Forward-step icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -439,7 +459,7 @@
                     </svg>
                 </button>
                 <!-- Repeat btn -->
-                <button id="repeat-btn" title="Repetir playlist">
+                <button id="repeat-btn" class="btn" title="Repetir playlist">
                     <!-- Repeat icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 0 640 640" class="icon">
                         <path fill="currentColor"
@@ -519,7 +539,7 @@
         const songInfo = d.getElementById("song-info");
         const parentElementOffsetWidth = songInfo.parentElement.offsetWidth;
 
-        const playBtn = d.getElementById("play-btn");
+        const playPauseBtn = d.getElementById("play-pause-btn");
         const forwardBtn = d.getElementById("forward-btn");
         const backwardBtn = d.getElementById("backward-btn");
         const repeatBtn = d.getElementById("repeat-btn");
@@ -753,10 +773,10 @@
 
         audioPlayer.addEventListener("ended", e => {
             if (songIndex >= numberOfSongs - 1 && !isRepeatAll) {
-                playBtn.title = "Reproducir";
+                playPauseBtn.title = "Reproducir";
 
-                playBtn.children[0].style.display = "inline";
-                playBtn.children[1].style.display = "none";
+                playPauseBtn.children[0].style.display = "inline";
+                playPauseBtn.children[1].style.display = "none";
 
                 songIndex = 0;
                 loadSong(songIndex);
@@ -810,22 +830,22 @@
 
         const pauseAudio = () => {
             audioPlayer.pause();
-            playBtn.title = "Reproducir";
+            playPauseBtn.title = "Reproducir";
 
-            playBtn.children[0].style.display = "inline";
-            playBtn.children[1].style.display = "none";
+            playPauseBtn.children[0].style.display = "inline";
+            playPauseBtn.children[1].style.display = "none";
         };
 
         const playAudio = async () => {
             await audioPlayer.play();
-            playBtn.title = "Pausar";
+            playPauseBtn.title = "Pausar";
 
-            playBtn.children[0].style.display = "none";
-            playBtn.children[1].style.display = "inline";
+            playPauseBtn.children[0].style.display = "none";
+            playPauseBtn.children[1].style.display = "inline";
         };
 
         // Controls
-        playBtn.addEventListener("click", e => {
+        playPauseBtn.addEventListener("click", e => {
             if (audioPlayer.src === "") return;
             audioPlayer.paused ? playAudio() : pauseAudio();
         });
