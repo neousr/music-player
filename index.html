@@ -402,8 +402,10 @@
         <div style="padding: 0 .25rem;">
 
             <!-- Song Info -->
-            <div class="text-center" style="margin: 1.25rem 0;position: relative;overflow: hidden;">
-                <p id="song-info" style="white-space: nowrap;animation: none;">Nada esta sonando...</p>
+            <div class="text-center" style="margin: 1.25rem 0;position: relative;overflow: hidden;height: 38px;">
+                <!-- <p id="song-info" style="white-space: nowrap;animation: none;">Nada esta sonando...</p> -->
+                <h3 id="song-title" style="font-weight: 600;"></h3>
+                <p id="song-artist" style="color: #a8b3bd;">Nada esta sonando...</p>
             </div>
 
             <!-- Current time slider -->
@@ -536,8 +538,10 @@
         const volumeBtn = d.getElementById("volume-btn");
         const volumeValue = d.getElementById("volume-value");
 
-        const songInfo = d.getElementById("song-info");
-        const parentElementOffsetWidth = songInfo.parentElement.offsetWidth;
+        // const songInfo = d.getElementById("song-info");
+        const songArtist = d.getElementById("song-artist");
+        const songTitle = d.getElementById("song-title");
+        // const parentElementOffsetWidth = songInfo.parentElement.offsetWidth;
 
         const playPauseBtn = d.getElementById("play-pause-btn");
         const forwardBtn = d.getElementById("forward-btn");
@@ -658,11 +662,14 @@
         const loadSong = songIndex => {
             audioPlayer.pause();
             audioPlayer.src = audioSourcePath + playlistName + "/" + songs[songIndex].name;
-            
             audioPlayer.dataset.songId = songs[songIndex].id;
-            songInfo.textContent = `${songs[songIndex].artist} - ${songs[songIndex].title}`;
+            
+            // songInfo.textContent = `${songs[songIndex].artist} - ${songs[songIndex].title}`;
+            songArtist.textContent = songs[songIndex].artist;
+            songTitle.textContent = songs[songIndex].title;
             pageTitle.textContent = `${songs[songIndex].title} - ${songs[songIndex].artist}`;
-            setAnimation(songInfo);
+            // No animation
+            // setAnimation(songInfo);
 
             numberOfSong.textContent = isShuffle ? songs[songIndex].id : songIndex + 1;
         }
@@ -719,10 +726,12 @@
 
                 audioPlayer.dataset.songId = song.id;
                 numberOfSong.textContent = song.id;
-                songInfo.textContent = `${song.artist} - ${song.title}`;
+                // songInfo.textContent = `${song.artist} - ${song.title}`;
+                songArtist.textContent = song.artist;
+                songTitle.textContent = song.title;
                 pageTitle.textContent = `${song.title} - ${song.artist}`;
 
-                setAnimation(songInfo);
+                // setAnimation(songInfo);
 
                 d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
             } catch (error) {
