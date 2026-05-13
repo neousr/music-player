@@ -38,18 +38,26 @@
             font-size: 13.333px;
             /* 1 pulgada = 2.54cm = 96px */
             /* margin: 96px; */
-            margin: 1rem;
+            /*margin: 1rem;*/
             background-color: #0d1117;
             color: #dee2e6;
+
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
         .container {
             width: 100%;
             max-width: 600px;
-            padding-right: calc(1.5rem * .5);
-            padding-left: calc(1.5rem * .5);
+            /*padding-right: calc(1.5rem * .5);
+            padding-left: calc(1.5rem * .5);*/
             margin-right: auto;
             margin-left: auto;
+            padding: 15px;
         }
 
         /* Styles input range */
@@ -294,6 +302,10 @@
             margin-bottom: 1rem;
         }
 
+        .mt-1 {
+            margin-top: 1rem;
+        }
+
         /* Definición de la animación para el desplazamiento */
         @keyframes slideIn {
             0% {
@@ -386,8 +398,8 @@
 
 <body>
 
-    <header class="text-center" style="margin-top: 1.5rem">
-        <h1 style="font-size: 1.25rem;font-weight: 400;" class="mb-1">Music Player</h1>
+    <header class="text-center mb-1" style="height: 38px;">
+        <!-- <h1 style="font-size: 1.25rem;font-weight: 400;" class="mb-1">Music Player</h1> -->
         <!-- <p>Melodía, ritmo y armonía, combinados.<br>Poné play <span style="color: var(--color);">
                 Play icon
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
@@ -395,18 +407,17 @@
                         d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z" />
                 </svg>
             </span> a tu mundo.</p> -->
+        <!-- Song Info -->
+        <div>
+            <!-- <p id="song-info" style="white-space: nowrap;animation: none;">Nada esta sonando...</p> -->
+            <h1 id="song-title" style="font-weight: 600;font-size: 1rem;"></h1>
+            <p id="song-artist" style="color: #a8b3bd;">Nada esta sonando...</p>
+        </div>
     </header>
 
     <main class="container">
 
-        <div style="padding: 0 .25rem;">
-
-            <!-- Song Info -->
-            <div class="text-center" style="margin: 1.25rem 0;position: relative;overflow: hidden;height: 38px;">
-                <!-- <p id="song-info" style="white-space: nowrap;animation: none;">Nada esta sonando...</p> -->
-                <h3 id="song-title" style="font-weight: 600;"></h3>
-                <p id="song-artist" style="color: #a8b3bd;">Nada esta sonando...</p>
-            </div>
+        <div class="player">
 
             <!-- Current time slider -->
             <div class="current-time-wrapper mb-1">
@@ -516,7 +527,7 @@
 
     </main>
 
-    <footer class="text-center" style="margin-top: 1.5rem;">
+    <footer class="text-center mt-1">
         <p>Copyright ©️ 2025 | Made with ❤️ by Neousr</p>
     </footer>
 
