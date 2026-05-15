@@ -709,7 +709,7 @@
             if (!tr) return;
 
             if (tr.classList.contains("playing")) {
-                pauseAudio();
+                audioPlayer.paused ? playAudio() : pauseAudio();
                 // audioPlayer.currentTime = 0;
                 // tr.classList.remove("playing");
                 return;
