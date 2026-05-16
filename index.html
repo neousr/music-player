@@ -130,25 +130,16 @@
 
         /* End Input range styles */
 
-        .flex {
+        .player-info {
             display: flex;
             align-items: center;
-        }
-
-        .center {
-            justify-content: center;
-        }
-
-        .space-between {
             justify-content: space-between;
+            font-size: .75rem;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
+        .player-info > * {
+            width: 50px;
+            font-variant-numeric: tabular-nums;
         }
 
         .playlist-container {
@@ -272,6 +263,32 @@
         .icon {
             height: 1.5em;
             width: auto;
+        }
+
+        /* Utilities */
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .center {
+            justify-content: center;
+        }
+
+        .space-between {
+            justify-content: space-between;
+        }
+
+        .text-start {
+            text-align: start;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-end {
+            text-align: end;
         }
 
         .hidden {
@@ -418,12 +435,14 @@
 
             <!-- Current time slider -->
             <div class="current-time-wrapper mb-1">
-                <div class="flex space-between fs-12">
-                    <span id="current-time">-:--</span>
-                    <span id="countdown" class="hidden">-0:00</span>
+                <div class="player-info">
+                    <span id="current-time" class="text-start">-:--</span>
+                    <!-- <span id="countdown" class="hidden">-0:00</span> -->
                     <!-- <span>Showing start of entries_total</span> -->
-                    <p><span id="number-of-song">-</span>/<span id="songs-total">-</span></p>
-                    <span id="duration">-:--</span>
+                    <div class="text-center">
+                        <span id="current-song">-</span>/<span id="total-songs">-</span>
+                    </div>
+                    <span id="duration" class="text-end">-:--</span>
                 </div>
                 <input type="range" id="current-time-slider" class="slider" min="0" max="100" value="0" step=".01">
             </div>
@@ -557,8 +576,8 @@
         const repeatBtn = d.getElementById("repeat-btn");
         const shuffleBtn = d.getElementById("shuffle-btn");
 
-        const songsTotal = d.getElementById("songs-total");
-        const numberOfSong = d.getElementById("number-of-song");
+        const totalSongs = d.getElementById("total-songs");
+        const currentSong = d.getElementById("current-song");
 
         const selectPlaylist = d.getElementById("playlist");
 
@@ -636,7 +655,7 @@
             numberOfSongs = playlist.tracks.total;
             songIndex = 0;
 
-            songsTotal.textContent = numberOfSongs;
+            totalSongs.textContent = numberOfSongs;
 
             // ¿Podemos eliminar esta condición? La respuesta es NO
             if (songIndex < numberOfSongs) {
@@ -679,7 +698,7 @@
             // No animation
             // setAnimation(songInfo);
 
-            numberOfSong.textContent = isShuffle ? songs[songIndex].id : songIndex + 1;
+            currentSong.textContent = isShuffle ? songs[songIndex].id : songIndex + 1;
         }
 
         const setAnimation = title => {
@@ -733,7 +752,7 @@
                 previousRowActive = tr;
 
                 audioPlayer.dataset.songId = song.id;
-                numberOfSong.textContent = song.id;
+                currentSong.textContent = song.id;
                 // songInfo.textContent = `${song.artist} - ${song.title}`;
                 songArtist.textContent = song.artist;
                 songTitle.textContent = song.title;
