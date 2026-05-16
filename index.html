@@ -14,17 +14,18 @@
 
     <style>
         :root {
-            --color: #39FF14;
+            /* --color: rgb(0, 255, 0); */
+            /* --color: rgb(0, 180, 255); */
+            --color: rgb(96, 215, 30);
             --bg: #0b0e19;
 
-            --progress-color: rgb(0, 255, 0);
+            --progress-color: var(--color);
             --track-color: #e9e9ed;
             --slider-height: 4px;
             --slider-br: .25rem;
 
             /* gris medio (inactivo) */
             --color-neutral: #9ca3af;
-
         }
 
         * {
@@ -271,7 +272,6 @@
         .icon {
             height: 1.5em;
             width: auto;
-            vertical-align: middle;
         }
 
         .hidden {
@@ -384,6 +384,11 @@
             align-items: center;
             justify-content: center;
             gap: .5rem;
+        }
+
+        #repeat-btn.active,
+        #shuffle-btn.active {
+            color: var(--color);
         }
     </style>
 </head>
@@ -907,7 +912,8 @@
                 repeatBtn.children[1].style.display = "none";
                 repeatBtn.children[0].style.display = "inline";
 
-                repeatBtn.style.removeProperty("color");
+                // repeatBtn.style.removeProperty("color");
+                repeatBtn.classList.remove("active");
                 return;
             }
             if (repeatState === 1) {
@@ -915,7 +921,8 @@
                 repeatBtn.title = "Repetir canción indefinidamente";
 
                 repeatBtn.children[0].querySelector("circle").style.display = "inline";
-                repeatBtn.style.color = "#67ff4d";
+                // repeatBtn.style.color = "#67ff4d";// esta
+                repeatBtn.classList.add("active");
                 return;
             }
             if (repeatState === 2) {
@@ -950,7 +957,8 @@
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "inline";
 
-                shuffleBtn.style.color = "#67ff4d";
+                // shuffleBtn.style.color = "#67ff4d"; // esta
+                shuffleBtn.classList.add("active");
             } else {
                 // Devolvemos el orden original, ordenando el array de objetos por la clave id
                 songs.sort((a, b) => a.id - b.id);
@@ -960,7 +968,8 @@
 
                 shuffleBtn.children[0].querySelector("circle").style.display = "none";
 
-                shuffleBtn.style.removeProperty("color");
+                // shuffleBtn.style.removeProperty("color"); //  esta
+                shuffleBtn.classList.remove("active");
             }
         });
 
