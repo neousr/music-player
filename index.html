@@ -424,7 +424,7 @@
         }
         
         .playlist-track:hover {
-            background-color: rgb(30, 35, 42);
+            background-color: #1c2431;
         }
 
         .playlist-track__number,
@@ -798,7 +798,7 @@
 
                 // setAnimation(songInfo);
 
-                d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
+                d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(23)}, ${getRandomHexColor(23)})`;
             } catch (error) {
                 console.log("No se pudo reproducir", error);
             }
@@ -938,7 +938,7 @@
             updateRowActive();
             // background: linear-gradient(to right, #6f0000, #200122);
             // https://uigradients.com
-            d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(32)}, ${getRandomHexColor(32)})`;
+            d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(23)}, ${getRandomHexColor(23)})`;
         });
 
         backwardBtn.addEventListener("click", e => {
