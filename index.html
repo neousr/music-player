@@ -26,8 +26,7 @@
             --slider-height: 4px;
             --slider-br: .25rem;
 
-            /* gris medio (inactivo) */
-            --color-neutral: #9ca3af;
+            --color-muted: #9198a1;
         }
 
         * {
@@ -151,7 +150,7 @@
             background: none;
             border: none;
             outline: none;
-            color: #a8b3bd;
+            color: var(--color-muted);
             width: 44px;
             height: 44px;
 
@@ -205,7 +204,7 @@
             display: inline-block;
             border: none;
             border-radius: .5rem;
-            background-color: #1e232a;
+            background-color: #151b23;
             color: #f0f6fc;
             outline: none;
             font-size: .875rem;
@@ -339,7 +338,7 @@
             font-size: .875rem;
             /* clave */
             flex-shrink: 0;
-            color: #afafaf;
+            color: var(--color-muted);
         }
 
         #volume-icon {
@@ -351,7 +350,7 @@
             min-width: 44px;
             font-size: .875rem;
             text-align: center;
-            color: #afafaf;
+            color: var(--color-muted);
         }
 
         .controls {
@@ -365,7 +364,7 @@
             height: 48px;
             margin-left: 13px;
             margin-right: 13px;
-            color: #afafaf;
+            color: var(--color-muted);
         }
 
         #repeat-btn.active,
@@ -385,7 +384,7 @@
 
         .track-artist {
             font-size: .875rem;
-            color: #afafaf;
+            color: var(--color-muted);
         }
 
         .track-title,
@@ -429,7 +428,7 @@
         }
         
         .playlist-track:hover {
-            background-color: #151b23;
+            background-color: #1e232a;
         }
 
         .playlist-track__number,
@@ -803,7 +802,7 @@
 
                 // setAnimation(songInfo);
 
-                d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(15)}, ${getRandomHexColor(15)})`;
+                // d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(15)}, ${getRandomHexColor(15)})`;
             } catch (error) {
                 console.log("No se pudo reproducir", error);
             }
@@ -943,7 +942,7 @@
             updateRowActive();
             // background: linear-gradient(to right, #6f0000, #200122);
             // https://uigradients.com
-            d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(15)}, ${getRandomHexColor(15)})`;
+            // d.body.style.background = `linear-gradient(to right, ${getRandomHexColor(15)}, ${getRandomHexColor(15)})`;
         });
 
         backwardBtn.addEventListener("click", e => {
