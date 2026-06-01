@@ -376,7 +376,6 @@
         .track {
             padding: .5rem;
             text-align: center;
-            height: 38px;
         }
 
         .track-title {
@@ -808,7 +807,7 @@
 
         const updateRowActive = () => {
             if (previousRowActive) previousRowActive.classList.remove("playing");
-            previousRowActive = container.querySelector(`tr[data-song-id="${songs[songIndex].id}"]`);
+            previousRowActive = container.querySelector(`li[data-song-id="${songs[songIndex].id}"]`);
             previousRowActive.classList.add("playing");
             scrollRowIntoView(previousRowActive);
         }
