@@ -404,11 +404,11 @@
         }
 
         .playlist-container .track-title {
-            /* font-size: .875rem; */
+            font-size: 15px;
         }
 
         .playlist-container .track-artist {
-            /* font-size: .75rem; */
+            font-size: 13.3333px;
         }
 
         .playlist {
@@ -752,7 +752,7 @@
                 li.classList.add("playlist-track");
                 li.innerHTML = `
                     <div class="playlist-track__number">
-                        <span>${songs[idx].id}</span>
+                        <span>${idx + 1}</span>
                     </div>
                     <div class="playlist-track__info">
                         <h3 class="track-title">${songs[idx].title}</h3>
@@ -779,7 +779,7 @@
                 return;
             }
 
-            if (!isShuffle) songIndex = +li.dataset.rowIndex;
+            if (!isShuffle) songIndex = Number(li.dataset.rowIndex);
             const song = getSongById(+li.dataset.songId);
             
             try {
