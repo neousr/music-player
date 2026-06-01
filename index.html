@@ -142,7 +142,7 @@
         }
 
         .playlist-container {
-            height: 310px;
+            height: 280px;
             overflow-y: auto;
             overflow-x: hidden;
             margin-top: 1rem;
@@ -573,7 +573,7 @@
 
     </main>
 
-    <footer class="text-center mt-1">
+    <footer class="text-center mt-1 fs-14">
         <p>Copyright ©️ 2025 | Made with ❤️ by Julio</p>
     </footer>
 
@@ -808,7 +808,7 @@
 
         const updateRowActive = () => {
             if (previousRowActive) previousRowActive.classList.remove("playing");
-            previousRowActive = tbody.querySelector(`tr[data-song-id="${songs[songIndex].id}"]`);
+            previousRowActive = container.querySelector(`tr[data-song-id="${songs[songIndex].id}"]`);
             previousRowActive.classList.add("playing");
             scrollRowIntoView(previousRowActive);
         }
