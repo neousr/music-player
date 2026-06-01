@@ -36,7 +36,6 @@
         }
 
         body {
-            font-size: 13.333px;
             /* 1 pulgada = 2.54cm = 96px */
             /* margin: 96px; */
             margin: 2rem 1rem;
@@ -51,7 +50,7 @@
             padding-left: calc(1.5rem * .5);*/
             margin-right: auto;
             margin-left: auto;
-            padding: 15px;
+            padding: 1rem;
         }
 
         /* Styles input range */
@@ -134,7 +133,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: .75rem;
+            font-size: .875rem;
         }
 
         .player-info > * {
@@ -143,60 +142,15 @@
         }
 
         .playlist-container {
-            height: 246px;
+            height: 310px;
             overflow-y: auto;
             overflow-x: hidden;
+            margin-top: 1rem;
             /* box-shadow: inset 0 0 3rem rgba(40, 48, 65, 1); */
         }
 
         .playing {
-            background-color: #283041 !important;
-            color: var(--color);
-            font-weight: bold;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            user-select: none;
-            table-layout: fixed;
-        }
-
-        .table tr {
-            cursor: pointer;
-        }
-
-        .table tr:hover {
-            background-color: rgba(40, 48, 65, .5);
-        }
-
-        .table td {
-            padding: 0.75rem 1rem;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .table tr td:nth-child(1) {
-            width: 15%;
-            text-align: center;
-        }
-
-        .table tr td:nth-child(2) {
-            width: 70%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .table tr td:nth-child(3) {
-            width: 15%;
-            text-align: center;
-        }
-        
-        .current-time-wrapper {
-            color: rgba(109, 109, 109, 1);
-            margin-left: 13px;
-            margin-right: 13px;
-            height: 48px;
+            background-color: rgba(96, 215, 30, .16) !important;
         }
 
         .btn {
@@ -392,9 +346,14 @@
             flex-shrink: 0;
         }
 
+        #volume-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
         #volume-value {
             min-width: 44px;
-            font-size: .75rem;
+            font-size: .875rem;
             text-align: center;
         }
 
@@ -405,30 +364,83 @@
             gap: .5rem;
         }
 
+        .current-time-wrapper {
+            height: 48px;
+        }
+
         #repeat-btn.active,
         #shuffle-btn.active {
             color: var(--color);
         }
+
+        .track {
+            padding: .5rem;
+            text-align: center;
+            height: 38px;
+        }
+
+        .track-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .track-artist {
+            font-size: .875rem;
+        }
+
+        .track-title,
+        .track-artist {
+            /* La propiedad CSS white-space especifica cómo se manejan los espacios en blanco dentro de un elemento. */
+            /* Cómo deshabilitar el ajuste de texto dentro de un elemento */
+            /* https://www.w3schools.com/cssref/playdemo.php?filename=playcss_white-space&preval=nowrap */
+            /* https://www.w3schools.com/css/css3_text_effects.asp */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+            .playlist-container {
+                height: 310px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                margin-top: 1rem;
+            }
+
+            .playlist {
+                list-style-type: none;
+            }
+
+            .playlist-track {
+                display: grid;
+                grid-template-columns: 44px auto 44px;
+                align-items: center;
+                cursor: pointer;
+                user-select: none;
+                border-radius: .5rem;
+                padding: .5rem 0;
+            }
+
+            .playlist-track__number,
+            .playlist-track__duration {
+                font-size: .875rem;
+                text-align: center;
+            }
+
+            .playlist-track__info {
+                min-width: 0;
+            }
     </style>
 </head>
 
 <body>
 
-    <header class="text-center mb-1" style="height: 38px;">
-        <!-- <h1 style="font-size: 1.25rem;font-weight: 400;" class="mb-1">Music Player</h1> -->
-        <!-- <p>Melodía, ritmo y armonía, combinados.<br>Poné play <span style="color: var(--color);">
-                Play icon
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon">
-                    <path fill="currentColor"
-                        d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z" />
-                </svg>
-            </span> a tu mundo.</p> -->
-        <!-- Song Info -->
-        <div>
-            <!-- <p id="song-info" style="white-space: nowrap;animation: none;">Nada esta sonando...</p> -->
-            <h1 id="song-title" style="font-weight: 600;font-size: 1rem;"></h1>
-            <p id="song-artist" style="color: #a8b3bd;">Nada esta sonando...</p>
+    <header>
+        
+        <div class="track">
+            <h3 id="song-title" class="track-title"></h3>
+            <p id="song-artist" class="track-artist">Nada esta sonando...</p>
         </div>
+        
     </header>
 
     <main class="container">
@@ -536,11 +548,22 @@
             <span id="playlist-duration-display" class="fs-12 hidden"></span>
         </div>
 
-        <!-- Table Playlist -->
+        <!-- Playlist -->
         <div class="playlist-container">
-            <table class="table">
-                <tbody id="tbody"></tbody>
-            </table>
+            <ul class="playlist">
+                <li class="playlist-track">
+                    <div class="playlist-track__number">
+                        <span>1</span>
+                    </div>
+                    <div class="playlist-track__info">
+                        <h3 class="track-title">Always on my Mind</h3>
+                        <p class="track-artist">Pet Shop Boys</p>
+                    </div>
+                    <div class="playlist-track__duration">
+                        <span>3:33</span>
+                    </div>
+                </li>
+            </ul>
         </div>
 
     </main>
@@ -567,10 +590,8 @@
         const volumeBtn = d.getElementById("volume-btn");
         const volumeValue = d.getElementById("volume-value");
 
-        // const songInfo = d.getElementById("song-info");
         const songArtist = d.getElementById("song-artist");
         const songTitle = d.getElementById("song-title");
-        // const parentElementOffsetWidth = songInfo.parentElement.offsetWidth;
 
         const playPauseBtn = d.getElementById("play-pause-btn");
         const forwardBtn = d.getElementById("forward-btn");
@@ -583,7 +604,7 @@
 
         const selectPlaylist = d.getElementById("playlist");
 
-        const tbody = d.getElementById("tbody");
+        const container = d.querySelector('.playlist');
 
         const downloadLink = d.createElement('a');
 
@@ -713,36 +734,44 @@
 
         // "1\tSi ya no estás - 3-2 Get Funky\t4:29"
         const displayPlaylist = songs => {
-            tbody.textContent = "";
+            container.innerHTML = '';
             const fragment = d.createDocumentFragment();
             for (let idx = 0; idx < numberOfSongs; idx++) {
-                const tr = d.createElement("tr");
-                tr.dataset.songId = songs[idx].id;
-                tr.classList.add("track");
-                tr.innerHTML = `<td>${idx + 1}</td><td>${songs[idx].title} - ${songs[idx].artist}</td><td>${formatTime(songs[idx].duration)}</td>`;
-                fragment.appendChild(tr);
+                const li = document.createElement("li");
+                li.dataset.songId = songs[idx].id;
+                li.dataset.rowIndex = idx;
+                li.classList.add("playlist-track");
+                li.innerHTML = `
+                    <div class="playlist-track__number">
+                        <span>${songs[idx].id}</span>
+                    </div>
+                    <div class="playlist-track__info">
+                        <h3 class="playlist-track__title">${songs[idx].title}</h3>
+                        <p class="playlist-track__artist">${songs[idx].artist}</p>
+                    </div>
+                    <div class="playlist-track__duration">
+                        <span>${formatTime(songs[idx].duration)}</span>
+                    </div>
+                `;
+                fragment.appendChild(li);
             }
-            tbody.appendChild(fragment);
-            tbody.children[songIndex].classList.add("playing");
-            previousRowActive = tbody.children[songIndex];
+            container.appendChild(fragment);
+            container.children[songIndex].classList.add("playing");
+            previousRowActive = container.children[songIndex];
             scrollRowIntoView(previousRowActive);
         }
 
-        tbody.addEventListener("click", e => {
-            // const tr = e.target.parentNode;
-            // if (tr.tagName !== "TR" || tr.classList.contains("playing")) return;
-            const tr = e.target.closest(".track");
-            if (!tr) return;
+        container.addEventListener("click", e => {
+            const li = e.target.closest("li");
+            if (!li) return;
 
-            if (tr.classList.contains("playing")) {
+            if (li.classList.contains("playing")) {
                 audioPlayer.paused ? playAudio() : pauseAudio();
-                // audioPlayer.currentTime = 0;
-                // tr.classList.remove("playing");
                 return;
             }
 
-            if (!isShuffle) songIndex = tr.rowIndex;
-            const song = getSongById(+tr.dataset.songId);
+            if (!isShuffle) songIndex = li.dataset.rowIndex;
+            const song = getSongById(+li.dataset.songId);
             
             try {
 
@@ -750,8 +779,8 @@
                 audioPlayer.pause();
                 audioPlayer.src = audioSourcePath + playlistName + "/" + song.name;
                 playAudio();
-                tr.classList.add("playing");
-                previousRowActive = tr;
+                li.classList.add("playing");
+                previousRowActive = li;
 
                 audioPlayer.dataset.songId = song.id;
                 currentSong.textContent = song.id;
