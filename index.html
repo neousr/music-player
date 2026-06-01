@@ -159,6 +159,7 @@
             /* Firefox => 1px 4px; chrome => 1px 6px */
             padding: 0;
             font-size: 1rem;
+            border-radius: .25rem;
 
             cursor: pointer;
             transition-duration: 0.4s;
@@ -173,7 +174,6 @@
 
         /* HOVER solo si está activo */
         button:not(:disabled):hover {
-            color: #dee2e6;
             background-color: #1e232a;
         }
 
@@ -183,7 +183,7 @@
         }
 
         #play-pause-btn:disabled {
-            background-color: rgba(109, 109, 109, 1);
+            /* background-color: rgba(109, 109, 109, 1) */;
         }
 
         #play-pause-btn {
@@ -192,7 +192,6 @@
             /* Esto hará que el tamaño del icono play/pause sea de 30px 30px */
             font-size: 1.3rem;
             aspect-ratio: 1/1;
-            border-radius: 50%;
         }
 
         .select {
