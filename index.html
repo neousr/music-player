@@ -775,7 +775,7 @@
                 return;
             }
 
-            if (!isShuffle) songIndex = li.dataset.rowIndex;
+            if (!isShuffle) songIndex = +li.dataset.rowIndex;
             const song = getSongById(+li.dataset.songId);
             
             try {
