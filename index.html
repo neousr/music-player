@@ -150,7 +150,7 @@
         }
 
         .playing {
-            background-color: rgba(96, 215, 30, .16) !important;
+            background-color: #283041 !important;
         }
 
         .btn {
@@ -380,12 +380,13 @@
         }
 
         .track-title {
-            font-weight: 600;
+            font-weight: 500;
             font-size: 1rem;
         }
 
         .track-artist {
             font-size: .875rem;
+            color: #afafaf;
         }
 
         .track-title,
@@ -399,36 +400,40 @@
             text-overflow: ellipsis;
         }
 
-            .playlist-container {
-                height: 310px;
-                overflow-y: auto;
-                overflow-x: hidden;
-                margin-top: 1rem;
-            }
+        .playlist-container {
+            height: 310px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-top: 1rem;
+        }
 
-            .playlist {
-                list-style-type: none;
-            }
+        .playlist {
+            list-style-type: none;
+        }
 
-            .playlist-track {
-                display: grid;
-                grid-template-columns: 44px auto 44px;
-                align-items: center;
-                cursor: pointer;
-                user-select: none;
-                border-radius: .5rem;
-                padding: .5rem 0;
-            }
+        .playlist-track {
+            display: grid;
+            grid-template-columns: 44px auto 44px;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            border-radius: .5rem;
+            padding: .5rem 0;
+        }
+        
+        .playlist-track:hover {
+            background-color: rgba(40, 48, 65, .5);
+        }
 
-            .playlist-track__number,
-            .playlist-track__duration {
-                font-size: .875rem;
-                text-align: center;
-            }
+        .playlist-track__number,
+        .playlist-track__duration {
+            font-size: .875rem;
+            text-align: center;
+        }
 
-            .playlist-track__info {
-                min-width: 0;
-            }
+        .playlist-track__info {
+            min-width: 0;
+        }
     </style>
 </head>
 
@@ -551,7 +556,7 @@
         <!-- Playlist -->
         <div class="playlist-container">
             <ul class="playlist">
-                <li class="playlist-track">
+                <!--<li class="playlist-track">
                     <div class="playlist-track__number">
                         <span>1</span>
                     </div>
@@ -562,7 +567,7 @@
                     <div class="playlist-track__duration">
                         <span>3:33</span>
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
 
@@ -746,8 +751,8 @@
                         <span>${songs[idx].id}</span>
                     </div>
                     <div class="playlist-track__info">
-                        <h3 class="playlist-track__title">${songs[idx].title}</h3>
-                        <p class="playlist-track__artist">${songs[idx].artist}</p>
+                        <h3 class="track-title">${songs[idx].title}</h3>
+                        <p class="track-artist">${songs[idx].artist}</p>
                     </div>
                     <div class="playlist-track__duration">
                         <span>${formatTime(songs[idx].duration)}</span>
