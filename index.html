@@ -18,13 +18,13 @@
             /* --color: rgb(0, 180, 255); */
             --color: rgb(31, 111, 235);
             --color: rgb(96, 215, 30);
-            --bg: #0b0e19;
+            --bg: #0d1117;
 
             --progress-color: var(--color);
             --track-color: #1e232a;
             --slider-height: 4px;
             --slider-br: .25rem;
-
+            --color-primary: #f0f6fc;
             --color-muted: #9198a1;
         }
 
@@ -39,8 +39,8 @@
             /* 1 pulgada = 2.54cm = 96px */
             /* margin: 96px; */
             margin: 1rem;
-            background-color: #0d1117;
-            color: #f0f6fc;
+            background-color: var(--bg);
+            color: var(--color-primary);
         }
 
         .container {
@@ -149,7 +149,7 @@
             background: none;
             border: none;
             outline: none;
-            color: var(--color-muted);
+            color: var(--color-primary);
             width: 44px;
             height: 44px;
 
@@ -174,6 +174,7 @@
         /* HOVER solo si está activo */
         button:not(:disabled):hover {
             color: #dee2e6;
+            background-color: #1e232a;
         }
 
         button:disabled {
@@ -190,8 +191,6 @@
             min-inline-size: 48px;
             /* Esto hará que el tamaño del icono play/pause sea de 30px 30px */
             font-size: 1.3rem;
-            background-color: #dee2e6;
-            color: #0d1117;
             aspect-ratio: 1/1;
             border-radius: 50%;
         }
@@ -204,7 +203,7 @@
             border: none;
             border-radius: .5rem;
             background-color: #151b23;
-            color: #f0f6fc;
+            color: var(--color-primary);
             outline: none;
             font-size: .875rem;
         }
@@ -398,7 +397,7 @@
         }
 
         .playlist-container {
-            height: 306px;
+            height: 298px;
             overflow-y: auto;
             overflow-x: hidden;
             margin-top: 1rem;
